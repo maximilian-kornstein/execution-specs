@@ -17,17 +17,13 @@ from typing import TYPE_CHECKING, Final, List, Tuple, final
 from ethereum_types.numeric import U64, U256, Uint, ulen
 
 from ethereum.exceptions import GasUsedExceedsLimitError
-from ethereum.forks.amsterdam.blocks import Header as PreviousHeader
 from ethereum.trace import GasAndRefund, StateGasAndRefund, evm_trace
-from ethereum.utils.numeric import ceil32, taylor_exponential
+from ethereum.utils.numeric import ceil32
 
-from ..blocks import Header
-from ..exceptions import (
-    BlobGasLimitExceededError,
-    InsufficientMaxFeePerBlobGasError,
-)
-from ..fork_types import ExecutionGas, StateGas, StateGasPerByte, VersionedHash
-from ..transactions import BlobTransaction, IntrinsicGasCost, Transaction
+from ..blobs import MAX_BLOB_GAS_PER_BLOCK
+from ..exceptions import BlobGasLimitExceededError
+from ..fork_types import ExecutionGas, StateGas, StateGasPerByte
+from ..transactions import IntrinsicGasCost
 from .exceptions import OutOfGasError
 
 if TYPE_CHECKING:
@@ -126,15 +122,6 @@ class GasCosts:
     PRECOMPILE_ECPAIRING_PER_POINT: Final[ExecutionGas] = ExecutionGas(
         Uint(34000)
     )
-
-    # Blobs
-    PER_BLOB: Final[U64] = U64(2**17)
-    BLOB_SCHEDULE_TARGET: Final[U64] = U64(14)
-    BLOB_TARGET_GAS_PER_BLOCK: Final[U64] = PER_BLOB * BLOB_SCHEDULE_TARGET
-    BLOB_BASE_COST: Final[Uint] = Uint(2**13)
-    BLOB_SCHEDULE_MAX: Final[U64] = U64(21)
-    BLOB_MIN_GASPRICE: Final[Uint] = Uint(1)
-    BLOB_BASE_FEE_UPDATE_FRACTION: Final[Uint] = Uint(11684671)
 
     # Block Access Lists
     BLOCK_ACCESS_LIST_ITEM: Final[ExecutionGas] = ExecutionGas(Uint(2000))
@@ -248,11 +235,6 @@ class GasCosts:
     OPCODE_LOG_DATA_PER_BYTE: Final[ExecutionGas] = ExecutionGas(Uint(8))
     OPCODE_LOG_TOPIC: Final[ExecutionGas] = ExecutionGas(Uint(375))
     OPCODE_SELFDESTRUCT_BASE: Final[ExecutionGas] = ExecutionGas(Uint(5000))
-
-
-MAX_BLOB_GAS_PER_BLOCK: Final[U64] = (
-    GasCosts.BLOB_SCHEDULE_MAX * GasCosts.PER_BLOB
-)
 
 
 @final
@@ -881,158 +863,6 @@ def init_code_cost(init_code_length: Uint) -> ExecutionGas:
     return ExecutionGas(
         GasCosts.CODE_INIT_PER_WORD * ceil32(init_code_length) // Uint(32)
     )
-
-
-def calculate_excess_blob_gas(
-    parent_header: Header | PreviousHeader,
-) -> U64:
-    """
-    Calculates the excess blob gas for the current block based
-    on the gas used in the parent block.
-
-    Parameters
-    ----------
-    parent_header :
-        The parent block of the current block.
-
-    Returns
-    -------
-    excess_blob_gas: `ethereum.base_types.U64`
-        The excess blob gas for the current block.
-
-    """
-    # Defaults for a parent without blob gas fields.
-    excess_blob_gas = U64(0)
-    blob_gas_used = U64(0)
-    base_fee_per_gas = Uint(0)
-
-    if isinstance(parent_header, (Header, PreviousHeader)):
-        # Read them from any parent that carries the fields, so
-        # accumulated excess blob gas survives a fork transition.
-        excess_blob_gas = parent_header.excess_blob_gas
-        blob_gas_used = parent_header.blob_gas_used
-        base_fee_per_gas = parent_header.base_fee_per_gas
-
-    parent_blob_gas = excess_blob_gas + blob_gas_used
-    if parent_blob_gas < GasCosts.BLOB_TARGET_GAS_PER_BLOCK:
-        return U64(0)
-
-    target_blob_gas_price = Uint(GasCosts.PER_BLOB)
-    target_blob_gas_price *= calculate_blob_gas_price(excess_blob_gas)
-
-    base_blob_tx_price = GasCosts.BLOB_BASE_COST * base_fee_per_gas
-    if base_blob_tx_price > target_blob_gas_price:
-        blob_schedule_delta = (
-            GasCosts.BLOB_SCHEDULE_MAX - GasCosts.BLOB_SCHEDULE_TARGET
-        )
-        return (
-            excess_blob_gas
-            + blob_gas_used * blob_schedule_delta // GasCosts.BLOB_SCHEDULE_MAX
-        )
-
-    return parent_blob_gas - GasCosts.BLOB_TARGET_GAS_PER_BLOCK
-
-
-def calculate_total_blob_gas(tx: Transaction) -> U64:
-    """
-    Calculate the total blob gas for a transaction.
-
-    Parameters
-    ----------
-    tx :
-        The transaction for which the blob gas is to be calculated.
-
-    Returns
-    -------
-    total_blob_gas: `ethereum.base_types.Uint`
-        The total blob gas for the transaction.
-
-    """
-    if isinstance(tx, BlobTransaction):
-        return GasCosts.PER_BLOB * U64(len(tx.blob_versioned_hashes))
-    else:
-        return U64(0)
-
-
-def calculate_blob_gas_price(excess_blob_gas: U64) -> Uint:
-    """
-    Calculate the blob gasprice for a block.
-
-    Parameters
-    ----------
-    excess_blob_gas :
-        The excess blob gas for the block.
-
-    Returns
-    -------
-    blob_gasprice: `Uint`
-        The blob gasprice.
-
-    """
-    return taylor_exponential(
-        GasCosts.BLOB_MIN_GASPRICE,
-        Uint(excess_blob_gas),
-        GasCosts.BLOB_BASE_FEE_UPDATE_FRACTION,
-    )
-
-
-def calculate_data_fee(excess_blob_gas: U64, tx: Transaction) -> Uint:
-    """
-    Calculate the blob data fee for a transaction.
-
-    Parameters
-    ----------
-    excess_blob_gas :
-        The excess_blob_gas for the execution.
-    tx :
-        The transaction for which the blob data fee is to be calculated.
-
-    Returns
-    -------
-    data_fee: `Uint`
-        The blob data fee.
-
-    """
-    return Uint(calculate_total_blob_gas(tx)) * calculate_blob_gas_price(
-        excess_blob_gas
-    )
-
-
-def check_max_fee_per_blob_gas(
-    blob_versioned_hashes: Tuple[VersionedHash, ...],
-    max_fee_per_blob_gas: U256,
-    excess_blob_gas: U64,
-) -> None:
-    """
-    Check that a transaction carrying blobs pays at least the blob gas
-    price.
-
-    A transaction without blobs pays no blob fee, so its fee cap is not
-    checked.
-
-    Parameters
-    ----------
-    blob_versioned_hashes :
-        The transaction's blob versioned hashes.
-    max_fee_per_blob_gas :
-        The transaction's fee cap per unit of blob gas.
-    excess_blob_gas :
-        The block's excess blob gas.
-
-    Raises
-    ------
-    InsufficientMaxFeePerBlobGasError :
-        If the fee cap does not cover the blob gas price.
-
-    """
-    if not blob_versioned_hashes:
-        return
-
-    blob_gas_price = calculate_blob_gas_price(excess_blob_gas)
-    if Uint(max_fee_per_blob_gas) < blob_gas_price:
-        raise InsufficientMaxFeePerBlobGasError(
-            "insufficient max fee per blob gas"
-        )
 
 
 def check_block_gas_capacity(

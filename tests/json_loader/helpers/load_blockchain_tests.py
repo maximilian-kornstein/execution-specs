@@ -397,30 +397,33 @@ class BlockchainTestFixture(Fixture, FixtureTestItem):
         `calculate_excess_blob_gas` recognises the parent header by the
         previous fork's `Header` class, which the clone refers to under
         another name. The constants are patched in place instead.
-        `GasCosts.BLOB_TARGET_GAS_PER_BLOCK` and `MAX_BLOB_GAS_PER_BLOCK`
-        are derived from the schedule at import time, so they are patched
-        along with it. Up to Osaka's BPO forks, `MAX_BLOB_GAS_PER_BLOCK` is
-        defined in the `fork` module; from Amsterdam on, it is defined in
-        `vm.gas`, where the block's blob gas capacity is checked, and
-        imported into `fork`. Every binding is patched.
+        `BLOB_TARGET_GAS_PER_BLOCK` and `MAX_BLOB_GAS_PER_BLOCK` are derived
+        from the schedule at import time, so they are patched along with it.
+        `MAX_BLOB_GAS_PER_BLOCK` is defined in the `blobs` module and
+        imported where the block's blob gas capacity is checked: into `fork`
+        up to Osaka's BPO forks, and into `vm.gas` from Amsterdam on. Every
+        binding is patched.
         """
         testing_fork = TESTING_FORKS.get(fork_name)
         if testing_fork is None or not testing_fork.bpo_fork():
             return
-        gas_module = load.fork.hardfork.module("vm.gas")
-        gas_costs = gas_module.GasCosts
-        fork_module = load.fork.hardfork.module("fork")
-        per_blob: U64 = gas_costs.PER_BLOB
+        hardfork = load.fork.hardfork
+        blobs_module = hardfork.module("blobs")
+        per_blob: U64 = blobs_module.GAS_PER_BLOB
         target = U64(testing_fork.target_blobs_per_block())
         maximum = U64(testing_fork.max_blobs_per_block())
         update_fraction = Uint(testing_fork.blob_base_fee_update_fraction())
         patches = [
-            (gas_costs, "BLOB_SCHEDULE_TARGET", target),
-            (gas_costs, "BLOB_SCHEDULE_MAX", maximum),
-            (gas_costs, "BLOB_TARGET_GAS_PER_BLOCK", per_blob * target),
-            (gas_costs, "BLOB_BASE_FEE_UPDATE_FRACTION", update_fraction),
+            (blobs_module, "BLOB_SCHEDULE_TARGET", target),
+            (blobs_module, "BLOB_SCHEDULE_MAX", maximum),
+            (blobs_module, "BLOB_TARGET_GAS_PER_BLOCK", per_blob * target),
+            (blobs_module, "BLOB_BASE_FEE_UPDATE_FRACTION", update_fraction),
         ]
-        for module in (fork_module, gas_module):
+        for module in (
+            blobs_module,
+            hardfork.module("fork"),
+            hardfork.module("vm.gas"),
+        ):
             if hasattr(module, "MAX_BLOB_GAS_PER_BLOCK"):
                 patches.append(
                     (module, "MAX_BLOB_GAS_PER_BLOCK", per_blob * maximum)

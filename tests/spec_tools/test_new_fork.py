@@ -71,29 +71,21 @@ def test_end_to_end(template_fork: str) -> None:
             source = f.read()
             assert "E2E Fork" in source
 
-        with (fork_dir / "vm" / "gas.py").open("r") as f:
+        with (fork_dir / "blobs.py").open("r") as f:
             source = f.read()
 
             expected = [
                 "BLOB_TARGET_GAS_PER_BLOCK: Final[U64] = U64(199)",
-                "PER_BLOB: Final[U64] = U64(1)",
+                "GAS_PER_BLOB: Final[U64] = U64(1)",
                 "BLOB_MIN_GASPRICE: Final[Uint] = Uint(2)",
                 "BLOB_BASE_FEE_UPDATE_FRACTION: Final[Uint] = Uint(750)",
                 "BLOB_SCHEDULE_TARGET: Final[U64] = U64(88)",
                 "BLOB_SCHEDULE_MAX: Final[U64] = U64(77)",
+                "MAX_BLOB_GAS_PER_BLOCK: Final[U64] = U64(99)",
             ]
 
             for needle in expected:
                 assert needle in source
-
-        # TODO: Assert on `vm/gas.py` alone once every fork usable as a
-        # template defines the constant there (i.e. once the pre-Amsterdam
-        # forks, which define it in `fork.py`, are gone).
-        blob_gas_ceiling = "MAX_BLOB_GAS_PER_BLOCK: Final[U64] = U64(99)"
-        assert any(
-            blob_gas_ceiling in (fork_dir / relative_path).read_text()
-            for relative_path in (Path("vm") / "gas.py", Path("fork.py"))
-        )
 
         # TODO: Remove this condition once trie.py is removed from all
         # forks (i.e. fork-agnostic Trie is ported to pre-amsterdam forks).

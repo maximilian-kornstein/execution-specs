@@ -66,16 +66,12 @@ def _different_fork_criteria(
     assert_never(criteria)
 
 
-def _gas_default(
-    gas_mod: Any,
-    gas_costs_attr: str,
+def _blob_default(
+    blobs_mod: Any,
+    name: str,
 ) -> U64 | Uint | None:
-    """Return a gas default from `GasCosts`."""
-    gas_costs = getattr(gas_mod, "GasCosts", None)
-    if gas_costs is None:
-        return None
-
-    value = getattr(gas_costs, gas_costs_attr, None)
+    """Return a blob gas default from the fork's `blobs` module."""
+    value = getattr(blobs_mod, name, None)
     if value is None:
         return None
 
@@ -85,27 +81,28 @@ def _gas_default(
 
 def _override_defaults(template: Hardfork) -> dict[str, U64 | Uint]:
     """Return template defaults keyed by ForkCache override name."""
-    gas_mod = template.module("vm.gas")
-    fork_mod = template.module("fork")
+    blobs_mod = template.module("blobs")
 
     defaults: dict[str, U64 | Uint | None] = {
-        "blob_target_gas_per_block": _gas_default(
-            gas_mod,
+        "blob_target_gas_per_block": _blob_default(
+            blobs_mod,
             "BLOB_TARGET_GAS_PER_BLOCK",
         ),
-        "gas_per_blob": _gas_default(gas_mod, "PER_BLOB"),
-        "blob_min_gasprice": _gas_default(gas_mod, "BLOB_MIN_GASPRICE"),
-        "blob_base_fee_update_fraction": _gas_default(
-            gas_mod,
+        "gas_per_blob": _blob_default(blobs_mod, "GAS_PER_BLOB"),
+        "blob_min_gasprice": _blob_default(blobs_mod, "BLOB_MIN_GASPRICE"),
+        "blob_base_fee_update_fraction": _blob_default(
+            blobs_mod,
             "BLOB_BASE_FEE_UPDATE_FRACTION",
         ),
-        "max_blob_gas_per_block": getattr(
-            fork_mod,
+        "max_blob_gas_per_block": _blob_default(
+            blobs_mod,
             "MAX_BLOB_GAS_PER_BLOCK",
-            None,
         ),
-        "blob_schedule_target": _gas_default(gas_mod, "BLOB_SCHEDULE_TARGET"),
-        "blob_schedule_max": _gas_default(gas_mod, "BLOB_SCHEDULE_MAX"),
+        "blob_schedule_target": _blob_default(
+            blobs_mod,
+            "BLOB_SCHEDULE_TARGET",
+        ),
+        "blob_schedule_max": _blob_default(blobs_mod, "BLOB_SCHEDULE_MAX"),
     }
 
     missing = sorted(

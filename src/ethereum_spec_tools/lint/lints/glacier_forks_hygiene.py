@@ -151,7 +151,7 @@ class GlacierForksHygiene(Lint):
                 previous_item.value.value = self.delay_blocks[fork_name]
 
             if fork_name.startswith("bpo"):
-                if item.startswith("GasCosts.BLOB_"):
+                if name == ".blobs" and item.startswith("BLOB_"):
                     continue
 
             if not compare_ast(previous_item, current_item):

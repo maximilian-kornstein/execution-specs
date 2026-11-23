@@ -17,18 +17,14 @@ from ethereum_types.numeric import U256, Uint, ulen
 from ethereum.state import EMPTY_ACCOUNT
 from ethereum.utils.numeric import ceil32
 
+from ...blobs import calculate_blob_gas_price
 from ...fork_types import ExecutionGas
 from ...state_tracker import get_account, get_code
 from ...utils.address import to_address_masked
 from ...vm.memory import buffer_read, memory_write
 from .. import Evm
 from ..exceptions import OutOfBoundsRead
-from ..gas import (
-    GasCosts,
-    calculate_blob_gas_price,
-    calculate_gas_extend_memory,
-    charge_gas,
-)
+from ..gas import GasCosts, calculate_gas_extend_memory, charge_gas
 from ..stack import pop, push
 
 

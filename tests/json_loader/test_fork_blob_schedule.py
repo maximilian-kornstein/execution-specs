@@ -24,11 +24,11 @@ BPO_NETWORKS = sorted(
 
 def spec_blob_schedule(load: Load) -> Tuple[int, int, int]:
     """Return the blob schedule constants of the spec fork of `load`."""
-    gas_costs = load.fork.hardfork.module("vm.gas").GasCosts
+    blobs_module = load.fork.hardfork.module("blobs")
     return (
-        int(gas_costs.BLOB_SCHEDULE_TARGET),
-        int(gas_costs.BLOB_SCHEDULE_MAX),
-        int(gas_costs.BLOB_BASE_FEE_UPDATE_FRACTION),
+        int(blobs_module.BLOB_SCHEDULE_TARGET),
+        int(blobs_module.BLOB_SCHEDULE_MAX),
+        int(blobs_module.BLOB_BASE_FEE_UPDATE_FRACTION),
     )
 
 
@@ -37,13 +37,17 @@ def derived_blob_constants(load: Load) -> Tuple[int, Set[int]]:
     Return the constants the spec fork derives from its blob schedule: the
     target blob gas and the values of every module binding of the maximum.
     """
-    gas_module = load.fork.hardfork.module("vm.gas")
-    fork_module = load.fork.hardfork.module("fork")
+    hardfork = load.fork.hardfork
+    blobs_module = hardfork.module("blobs")
     return (
-        int(gas_module.GasCosts.BLOB_TARGET_GAS_PER_BLOCK),
+        int(blobs_module.BLOB_TARGET_GAS_PER_BLOCK),
         {
             int(module.MAX_BLOB_GAS_PER_BLOCK)
-            for module in (fork_module, gas_module)
+            for module in (
+                blobs_module,
+                hardfork.module("fork"),
+                hardfork.module("vm.gas"),
+            )
             if hasattr(module, "MAX_BLOB_GAS_PER_BLOCK")
         },
     )
@@ -95,7 +99,7 @@ def test_bpo_fork_derives_its_constants_from_the_schedule(
     Check the derivation the patch reproduces for the spec's own values.
     """
     load = Load(FORKS[spec_fork_name(network)].short_name)
-    per_blob = int(load.fork.hardfork.module("vm.gas").GasCosts.PER_BLOB)
+    per_blob = int(load.fork.hardfork.module("blobs").GAS_PER_BLOB)
     target, maximum, _ = spec_blob_schedule(load)
     assert derived_blob_constants(load) == (
         per_blob * target,
@@ -109,7 +113,7 @@ def test_bpo_fork_validates_with_the_framework_blob_schedule(
 ) -> None:
     """Patch in the schedule the fixtures were filled with, then restore."""
     load = Load(FORKS[spec_fork_name(network)].short_name)
-    per_blob = int(load.fork.hardfork.module("vm.gas").GasCosts.PER_BLOB)
+    per_blob = int(load.fork.hardfork.module("blobs").GAS_PER_BLOB)
     spec_schedule = spec_blob_schedule(load)
     spec_derived = derived_blob_constants(load)
     framework_schedule = framework_blob_schedule(TESTING_FORKS[network])
@@ -131,9 +135,9 @@ def test_bpo_fork_validates_with_the_framework_blob_schedule(
 def test_non_bpo_fork_is_left_alone(network: str) -> None:
     """Patch nothing for a fork that is not a BPO fork."""
     load = Load(FORKS[network].short_name)
-    gas_costs = load.fork.hardfork.module("vm.gas").GasCosts
-    before: dict[str, Any] = dict(vars(gas_costs))
+    blobs_module = load.fork.hardfork.module("blobs")
+    before: dict[str, Any] = dict(vars(blobs_module))
 
     with ExitStack() as stack:
         BlockchainTestFixture._schedule_blob_params(stack, load, network)
-        assert dict(vars(gas_costs)) == before
+        assert dict(vars(blobs_module)) == before

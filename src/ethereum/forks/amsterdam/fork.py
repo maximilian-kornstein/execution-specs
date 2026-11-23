@@ -32,6 +32,12 @@ from ethereum.state import EMPTY_CODE_HASH, Address, BlockDiff
 from ethereum.state_mpt import State, apply_changes_to_state
 
 from . import vm
+from .blobs import (
+    calculate_data_fee,
+    calculate_excess_blob_gas,
+    calculate_total_blob_gas,
+    check_max_fee_per_blob_gas,
+)
 from .block_access_lists import (
     BlockAccessListBuilder,
     build_block_access_list,
@@ -82,17 +88,12 @@ from .transactions import (
 from .utils.address import compute_contract_address
 from .utils.hexadecimal import hex_to_address
 from .vm.eoa_delegation import is_valid_delegation
-from .vm.gas import MAX_BLOB_GAS_PER_BLOCK as MAX_BLOB_GAS_PER_BLOCK
 from .vm.gas import (
     GasCosts,
     StateGasCosts,
     TransactionGasSettlement,
     allocate_evm_gas,
-    calculate_data_fee,
-    calculate_excess_blob_gas,
-    calculate_total_blob_gas,
     check_block_gas_capacity,
-    check_max_fee_per_blob_gas,
     settle_transaction_gas,
 )
 from .vm.interpreter import TransactionOutput, process_top_level

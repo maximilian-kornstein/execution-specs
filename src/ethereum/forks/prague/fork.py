@@ -12,7 +12,7 @@ Entry point for the Ethereum specification.
 """
 
 from dataclasses import dataclass
-from typing import Final, List, Optional, Tuple, final
+from typing import List, Optional, Tuple, final
 
 from ethereum_rlp import rlp
 from ethereum_types.bytes import Bytes
@@ -32,6 +32,13 @@ from ethereum.state import EMPTY_CODE_HASH, Address
 from ethereum.state_mpt import State, apply_changes_to_state
 
 from . import vm
+from .blobs import (
+    MAX_BLOB_GAS_PER_BLOCK,
+    calculate_blob_gas_price,
+    calculate_data_fee,
+    calculate_excess_blob_gas,
+    calculate_total_blob_gas,
+)
 from .blocks import Block, Header, Log, Receipt, Withdrawal, encode_receipt
 from .bloom import logs_bloom
 from .exceptions import (
@@ -82,13 +89,7 @@ from .utils.hexadecimal import hex_to_address
 from .utils.message import prepare_message
 from .vm import Message
 from .vm.eoa_delegation import is_valid_delegation
-from .vm.gas import (
-    GasCosts,
-    calculate_blob_gas_price,
-    calculate_data_fee,
-    calculate_excess_blob_gas,
-    calculate_total_blob_gas,
-)
+from .vm.gas import GasCosts
 from .vm.interpreter import MessageCallOutput, process_message_call
 
 BASE_FEE_MAX_CHANGE_DENOMINATOR = Uint(8)
@@ -99,7 +100,6 @@ BEACON_ROOTS_ADDRESS = hex_to_address(
     "0x000F3df6D732807Ef1319fB7B8bB8522d0Beac02"
 )
 SYSTEM_TRANSACTION_GAS = Uint(30000000)
-MAX_BLOB_GAS_PER_BLOCK: Final[U64] = U64(1179648)
 VERSIONED_HASH_VERSION_KZG = b"\x01"
 
 WITHDRAWAL_REQUEST_PREDEPLOY_ADDRESS = hex_to_address(

@@ -114,39 +114,44 @@ class ForkOverrides:
         ):
             return False
 
-        fork_mod = template.module("fork")
-        gas_costs = template.module("vm.gas").GasCosts
+        # Forks before blobs have no `blobs` module, so they match no blob
+        # override.
+        blobs: ModuleType | None
+        try:
+            blobs = template.module("blobs")
+        except ModuleNotFoundError:
+            blobs = None
 
         checks = (
             (
                 self.max_blob_gas_per_block,
-                fork_mod,
+                blobs,
                 "MAX_BLOB_GAS_PER_BLOCK",
             ),
             (
                 self.blob_target_gas_per_block,
-                gas_costs,
+                blobs,
                 "BLOB_TARGET_GAS_PER_BLOCK",
             ),
-            (self.gas_per_blob, gas_costs, "PER_BLOB"),
+            (self.gas_per_blob, blobs, "GAS_PER_BLOB"),
             (
                 self.blob_min_gasprice,
-                gas_costs,
+                blobs,
                 "BLOB_MIN_GASPRICE",
             ),
             (
                 self.blob_base_fee_update_fraction,
-                gas_costs,
+                blobs,
                 "BLOB_BASE_FEE_UPDATE_FRACTION",
             ),
             (
                 self.blob_schedule_target,
-                gas_costs,
+                blobs,
                 "BLOB_SCHEDULE_TARGET",
             ),
             (
                 self.blob_schedule_max,
-                gas_costs,
+                blobs,
                 "BLOB_SCHEDULE_MAX",
             ),
         )
