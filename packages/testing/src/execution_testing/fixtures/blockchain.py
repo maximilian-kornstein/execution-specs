@@ -502,7 +502,7 @@ class FixtureExecutionPayload(ForkScopedSSZModel):
     ) = Field(None, description="RLP-serialized EIP-7928 Block Access List")
     slot_number: Uint64 | None = Field(None)
 
-    __ssz_schema__ = SSZForkSchema(
+    __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
         base_fork=Paris,
         base=(
             "parent_hash",

@@ -9,7 +9,7 @@ ssz_static generator.
 
 import random
 from pathlib import Path
-from typing import Annotated, List
+from typing import Annotated, ClassVar, List
 
 import pytest
 import yaml
@@ -75,7 +75,7 @@ class ForkedPayload(SSZModel):
         Annotated[List[Withdrawal], ssz_list(MAX_WITHDRAWALS)] | None
     ) = None
 
-    __ssz_schema__ = SSZForkSchema(
+    __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
         base_fork="Paris",
         base=("parent_hash", "block_number"),
         appended={"Shanghai": ("withdrawals",)},

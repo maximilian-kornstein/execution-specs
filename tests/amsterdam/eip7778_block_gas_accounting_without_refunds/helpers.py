@@ -53,8 +53,9 @@ class TransactionFailure(Enum):
 class RefundTransaction(Transaction):
     """Transaction modeled to produce a refund."""
 
-    sender: EOA
-    expected_receipt: TransactionReceipt = Field(exclude=True)
+    # A refund transaction always has a sender and an expected receipt.
+    sender: EOA  # type: ignore[mutable-override]
+    expected_receipt: TransactionReceipt = Field(exclude=True)  # type: ignore[mutable-override]
     receipt_gas_used: int = Field(exclude=True)
     gas_used_pre_refund: int = Field(exclude=True)
     state_gas: int = Field(exclude=True)

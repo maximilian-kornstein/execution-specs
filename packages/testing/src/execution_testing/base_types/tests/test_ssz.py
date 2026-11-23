@@ -2,7 +2,15 @@
 Tests for SSZ support in base_types.
 """
 
-from typing import Annotated, Callable, List, Optional, Tuple
+from typing import (
+    Annotated,
+    Callable,
+    ClassVar,
+    List,
+    Optional,
+    Sequence,
+    Tuple,
+)
 
 import pytest
 from pydantic import ValidationError
@@ -114,7 +122,7 @@ class Prog(ProgressiveModel):
 class GapProg(ProgressiveModel):
     """Two fields around a reserved (0) middle slot."""
 
-    __active_fields__ = [1, 0, 1]
+    __active_fields__: ClassVar[Sequence[int]] = [1, 0, 1]
 
     a: Uint64
     c: Uint64
@@ -142,7 +150,7 @@ class ForkedPayload(SSZModel):
         Annotated[List[Withdrawal], ssz_list(MAX_WITHDRAWALS)] | None
     ) = None
 
-    __ssz_schema__ = SSZForkSchema(
+    __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
         base_fork="Paris",
         base=("parent_hash", "block_number", "transactions"),
         appended={
@@ -535,7 +543,7 @@ def test_fork_propagates_to_nested_containers() -> None:
         payload: ForkedPayload
         blob_count: Uint64 | None = None  # Shanghai-era envelope field
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("payload",),
             appended={"Shanghai": ("blob_count",)},
@@ -627,7 +635,7 @@ def _bad_schema_field_typo() -> None:
         a: Uint64
         b: Uint64 | None = None
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("a",),
             appended={"Shanghai": ("typo",)},
@@ -639,7 +647,7 @@ def _bad_required_appended() -> None:
         a: Uint64
         b: Uint64  # appended but not optional
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("a",),
             appended={"Shanghai": ("b",)},
@@ -651,7 +659,7 @@ def _bad_optional_base() -> None:
         a: Uint64
         b: Uint64 | None = None  # optional but declared in base
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("a", "b"),
             appended={},
@@ -663,7 +671,7 @@ def _bad_appended_no_default() -> None:
         a: Uint64
         b: Uint64 | None  # optional type but NO None default
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("a",),
             appended={"Shanghai": ("b",)},
@@ -675,7 +683,7 @@ def _bad_duplicate_schema_names() -> None:
         a: Uint64
         b: Uint64 | None = None
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris",
             base=("a", "a"),
             appended={"Shanghai": ("b",)},
@@ -692,7 +700,7 @@ def _bad_progressive_with_schema() -> None:
     class Bad(ProgressiveModel):
         a: Uint64
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Paris", base=("a",), appended={}
         )
 
@@ -705,7 +713,8 @@ def _bad_progressive_with_optional() -> None:
 
 def _bad_progressive_active_count() -> None:
     class Bad(ProgressiveModel):
-        __active_fields__ = [1, 1]  # two active, three declared fields
+        # two active, three declared fields
+        __active_fields__: ClassVar[Sequence[int]] = [1, 1]
 
         a: Uint64
         b: Uint64
@@ -717,7 +726,8 @@ def _bad_progressive_active_counts_excluded() -> None:
     # fill it: caught here rather than inside remerkleable at first
     # build_ssz_type.
     class Bad(ProgressiveModel):
-        __active_fields__ = [1, 1, 1]  # three active, two SSZ fields
+        # three active, two SSZ fields
+        __active_fields__: ClassVar[Sequence[int]] = [1, 1, 1]
 
         a: Uint64
         note: Annotated[str, ssz_exclude()] = "json-only"
@@ -900,7 +910,7 @@ def test_excluded_field_on_fork_scoped_model() -> None:
         b: Uint64 | None = None
         note: Annotated[str, ssz_exclude()] = "aux"
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="One",
             base=("a",),
             appended={"Two": ("b",)},
@@ -918,7 +928,8 @@ def test_excluded_field_takes_no_active_slot() -> None:
     assert ssz_fields(MixedProg) == ("a", "c")
 
     class GapMixedProg(ProgressiveModel):
-        __active_fields__ = [1, 0, 1]  # two active, two SSZ fields
+        # two active, two SSZ fields
+        __active_fields__: ClassVar[Sequence[int]] = [1, 0, 1]
 
         a: Uint64
         note: Annotated[str, ssz_exclude()] = "json-only"
@@ -951,7 +962,7 @@ def test_single_fork_schema_works_end_to_end() -> None:
     class OnlyFork(SSZModel):
         a: Uint64
 
-        __ssz_schema__ = SSZForkSchema(
+        __ssz_schema__: ClassVar[SSZForkSchema | None] = SSZForkSchema(
             base_fork="Only", base=("a",), appended={}
         )
 

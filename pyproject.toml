@@ -490,8 +490,8 @@ enable_error_code = [
     "unimported-reveal",
     "exhaustive-match",
     "deprecated",
+    "mutable-override",
 
-   #"mutable-override",
    #"truthy-bool",
    #"explicit-override",
    #"ignore-without-code",

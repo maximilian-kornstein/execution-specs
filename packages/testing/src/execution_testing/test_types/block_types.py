@@ -98,9 +98,10 @@ class WithdrawalGeneric(CamelModel, Generic[NumberBoundTypeVar]):
 class Withdrawal(WithdrawalGeneric[HexNumber], SSZModel):
     """Withdrawal type; also the consensus-layer SSZ container."""
 
-    index: Uint64
-    validator_index: Uint64
-    amount: Uint64
+    # SSZ needs the width-checked `Uint64` subtype of `HexNumber`.
+    index: Uint64  # type: ignore[mutable-override]
+    validator_index: Uint64  # type: ignore[mutable-override]
+    amount: Uint64  # type: ignore[mutable-override]
 
 
 class EnvironmentGeneric(CamelModel, Generic[NumberBoundTypeVar]):

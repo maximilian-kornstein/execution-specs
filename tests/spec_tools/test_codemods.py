@@ -4,9 +4,9 @@ Unit tests for the codemods used by the ethereum-spec-new-fork tool.
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any
+from typing import Any, Type
 
-from libcst.codemod import CodemodContext, CodemodTest
+from libcst.codemod import Codemod, CodemodContext, CodemodTest
 from libcst.metadata import FullRepoManager, FullyQualifiedNameProvider
 
 from ethereum_spec_tools.new_fork.codemod.comment import CommentReplaceCommand
@@ -19,7 +19,7 @@ from ethereum_spec_tools.new_fork.codemod.string_replace import (
 class TestCommentReplaceCommand(CodemodTest):
     """Tests for `CommentReplaceCommand`."""
 
-    TRANSFORM = CommentReplaceCommand
+    TRANSFORM: Type[Codemod] = CommentReplaceCommand
 
     def test_replaces_text_in_comments(self) -> None:
         """Comments are rewritten, code and strings are left alone."""
@@ -41,7 +41,7 @@ class TestCommentReplaceCommand(CodemodTest):
 class TestStringReplaceCommand(CodemodTest):
     """Tests for `StringReplaceCommand`."""
 
-    TRANSFORM = StringReplaceCommand
+    TRANSFORM: Type[Codemod] = StringReplaceCommand
 
     def test_replaces_text_in_strings(self) -> None:
         """Strings and docstrings are rewritten, code and comments are not."""
@@ -69,7 +69,7 @@ class TestSetConstantCommand(CodemodTest):
     temporary repository and passes a `FullRepoManager` in the context.
     """
 
-    TRANSFORM = SetConstantCommand
+    TRANSFORM: Type[Codemod] = SetConstantCommand
 
     def assert_constant(self, before: str, after: str, **kwargs: Any) -> None:
         """Run the codemod on `before`, as module `pkg.mod`."""

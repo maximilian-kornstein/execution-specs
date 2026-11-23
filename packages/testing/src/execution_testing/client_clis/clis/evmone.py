@@ -41,7 +41,7 @@ class EvmOneTransitionTool(TransitionTool):
     # excluding the sibling `evmone-statetest` / `evmone-blockchaintest` tools.
     detect_binary_pattern = re.compile(r"^evmone\b(?!-)")
     version_flag = "--version"
-    subcommand = "t8n"
+    subcommand: Optional[str] = "t8n"
     t8n_use_stream = False
 
     binary: Path

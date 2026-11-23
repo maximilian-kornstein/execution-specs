@@ -115,7 +115,6 @@ class BesuTransitionTool(TransitionTool):
     cached_version: Optional[str] = None
     trace: bool
     process: Optional[subprocess.Popen] = None
-    server_url: str
     besu_trace_dir: Optional[tempfile.TemporaryDirectory]
 
     supports_xdist: ClassVar[bool] = False
@@ -248,6 +247,7 @@ class BesuTransitionTool(TransitionTool):
                 },
             )
 
+        assert self.server_url is not None, "t8n-server did not start"
         response = requests.post(self.server_url, json=post_data, timeout=5)
         # exception visible in pytest failure output
         response.raise_for_status()

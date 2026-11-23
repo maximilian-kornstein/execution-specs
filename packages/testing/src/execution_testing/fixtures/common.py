@@ -123,7 +123,8 @@ class FixtureTransactionLog(CamelModel, RLPSerializable):
 class FixtureReceiptDelegation(ReceiptDelegation):
     """Fixture variant of the ReceiptDelegation type."""
 
-    nonce: ZeroPaddedHexNumber
+    # Fixtures serialize the nonce zero-padded.
+    nonce: ZeroPaddedHexNumber  # type: ignore[mutable-override]
 
 
 class FixtureTransactionReceipt(CamelModel, RLPSerializable):
