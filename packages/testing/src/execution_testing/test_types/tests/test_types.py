@@ -375,25 +375,25 @@ def test_account_check_alloc(
             id="empty_alloc",
         ),
         pytest.param(
-            Alloc({0x1: {"nonce": 1}}),  # type: ignore
-            Alloc({0x2: {"nonce": 2}}),  # type: ignore
-            Alloc({0x1: Account(nonce=1), 0x2: Account(nonce=2)}),  # type: ignore
+            Alloc({0x1: {"nonce": 1}}),  # type: ignore[dict-item]
+            Alloc({0x2: {"nonce": 2}}),  # type: ignore[dict-item]
+            Alloc({0x1: Account(nonce=1), 0x2: Account(nonce=2)}),  # type: ignore[dict-item]
             id="alloc_different_accounts",
         ),
         pytest.param(
-            Alloc({0x2: {"nonce": 1}}),  # type: ignore
+            Alloc({0x2: {"nonce": 1}}),  # type: ignore[dict-item]
             Alloc(
-                {"0x0000000000000000000000000000000000000002": {"nonce": 2}}  # type: ignore
+                {"0x0000000000000000000000000000000000000002": {"nonce": 2}}  # type: ignore[dict-item]
             ),
-            Alloc({0x2: Account(nonce=2)}),  # type: ignore
+            Alloc({0x2: Account(nonce=2)}),  # type: ignore[dict-item]
             id="overwrite_account",
         ),
         pytest.param(
-            Alloc({0x2: {"balance": 1}}),  # type: ignore
+            Alloc({0x2: {"balance": 1}}),  # type: ignore[dict-item]
             Alloc(
-                {"0x0000000000000000000000000000000000000002": {"nonce": 1}}  # type: ignore
+                {"0x0000000000000000000000000000000000000002": {"nonce": 1}}  # type: ignore[dict-item]
             ),
-            Alloc({0x2: Account(balance=1, nonce=1)}),  # type: ignore
+            Alloc({0x2: Account(balance=1, nonce=1)}),  # type: ignore[dict-item]
             id="mix_account",
         ),
     ],

@@ -232,7 +232,7 @@ def test_set_code_to_non_empty_storage_non_zero_nonce(
     """Test the setting the code to an account that has non-empty storage."""
     auth_signer = pre.fund_eoa(
         amount=0,
-        storage=Storage({0: 1}),  # type: ignore
+        storage=Storage({0: 1}),  # type: ignore[dict-item]
     )
     sender = pre.fund_eoa()
 
@@ -3153,7 +3153,7 @@ def test_set_code_to_log(
 
     set_to_code = (
         Op.MSTORE(0, 0x1234)
-        + log_opcode(size=32, **log_kwargs)  # type: ignore
+        + log_opcode(size=32, **log_kwargs)  # type: ignore[arg-type]
         + Op.STOP
     )
     set_to_address = pre.deploy_contract(set_to_code)
@@ -3559,7 +3559,7 @@ def test_eoa_tx_after_set_code(
             ),
         ],
     )
-    auth_signer.nonce += 1  # type: ignore
+    auth_signer.nonce += 1  # type: ignore[assignment]
 
     follow_up_eoa_txs: List[Transaction] = []
     match tx_type:
@@ -3690,7 +3690,7 @@ def test_reset_code(
         )
     ]
 
-    auth_signer.nonce += 1  # type: ignore
+    auth_signer.nonce += 1  # type: ignore[assignment]
 
     if self_sponsored:
         sender = auth_signer

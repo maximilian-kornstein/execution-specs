@@ -158,7 +158,7 @@ class TestCases(RootModel):
         self, position: int, value: TestCaseIndexFile | TestCaseStream
     ) -> None:
         """Set a test case at a particular index."""
-        self.root[position] = value  # type: ignore
+        self.root[position] = value  # type: ignore[assignment]
 
     def __delitem__(self, position: int) -> None:
         """Remove a test case at a particular index."""
@@ -166,17 +166,17 @@ class TestCases(RootModel):
 
     def append(self, item: TestCaseIndexFile | TestCaseStream) -> None:
         """Append a test case to the root list."""
-        self.root.append(item)  # type: ignore
+        self.root.append(item)  # type: ignore[arg-type]
 
     def insert(
         self, position: int, value: TestCaseIndexFile | TestCaseStream
     ) -> None:
         """Insert a test case at a given position."""
-        self.root.insert(position, value)  # type: ignore
+        self.root.insert(position, value)  # type: ignore[arg-type]
 
     def remove(self, value: TestCaseIndexFile | TestCaseStream) -> None:
         """Remove a test case from the root list."""
-        self.root.remove(value)  # type: ignore
+        self.root.remove(value)  # type: ignore[arg-type]
 
     def pop(self, position: int = -1) -> TestCaseIndexFile | TestCaseStream:
         """Remove and return a test case at the given position."""

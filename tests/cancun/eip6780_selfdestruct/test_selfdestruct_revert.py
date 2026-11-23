@@ -394,7 +394,7 @@ def test_selfdestruct_created_in_same_tx_with_revert(  # noqa SC200
             code="0x",
             storage=Storage(
                 {
-                    0: selfdestruct_with_transfer_contract_address,  # type: ignore
+                    0: selfdestruct_with_transfer_contract_address,  # type: ignore[dict-item]
                 }
             ),
         ),
@@ -403,7 +403,7 @@ def test_selfdestruct_created_in_same_tx_with_revert(  # noqa SC200
         ),
         recursive_revert_contract_address: Account(
             code=recursive_revert_contract_code,
-            storage=Storage({1: 1}),  # type: ignore
+            storage=Storage({1: 1}),  # type: ignore[dict-item]
         ),
     }
 
@@ -428,9 +428,9 @@ def test_selfdestruct_created_in_same_tx_with_revert(  # noqa SC200
                 {
                     # 2 value transfers (1 in outer call, 1 in reverted inner
                     # call)
-                    0: 1,  # type: ignore
+                    0: 1,  # type: ignore[dict-item]
                     # 1 selfdestruct in reverted inner call
-                    1: 0,  # type: ignore
+                    1: 0,  # type: ignore[dict-item]
                 }
             ),
         )
@@ -586,9 +586,9 @@ def test_selfdestruct_not_created_in_same_tx_with_revert(
                 {
                     # 2 value transfers: 1 in outer call, 1 in reverted inner
                     # call
-                    0: 1,  # type: ignore
+                    0: 1,  # type: ignore[dict-item]
                     # 1 selfdestruct in reverted inner call
-                    1: 1,  # type: ignore
+                    1: 1,  # type: ignore[dict-item]
                 }
             ),
         )
@@ -603,14 +603,14 @@ def test_selfdestruct_not_created_in_same_tx_with_revert(
                 {
                     # 2 value transfers:
                     #   1 in outer call, 1 in reverted inner call
-                    0: 1,  # type: ignore
+                    0: 1,  # type: ignore[dict-item]
                     # 2 selfdestructs:
                     #   1 in outer call, 1 in reverted inner call
-                    1: 0,  # type: ignore
+                    1: 0,  # type: ignore[dict-item]
                 }
             ),
         )
-        post[selfdestruct_recipient_address] = Account.NONEXISTENT  # type: ignore
+        post[selfdestruct_recipient_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     tx = Transaction(
         value=0,

@@ -70,7 +70,7 @@ def test_eip1559_tx_validity(
 
     post = {account: Account(storage={0: 0xDEADBEEF if not valid else 1})}
     if not valid:
-        post[sender] = pre[sender]  # type: ignore
+        post[sender] = pre[sender]  # type: ignore[assignment]
 
     state_test(pre=pre, post=post, tx=tx)
 

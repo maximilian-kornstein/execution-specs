@@ -32,7 +32,7 @@ class MockTest(BaseTest):
         genesis_environment: Environment,
     ) -> None:
         """Initialize mock test."""
-        super().__init__(  # type: ignore
+        super().__init__(  # type: ignore[call-arg]
             pre=pre,
             fork=fork,
             genesis_environment=genesis_environment,

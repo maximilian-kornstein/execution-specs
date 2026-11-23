@@ -219,4 +219,4 @@ def test_fork_parametrizer(
             assert values[i].values[j] == expected_parameter_sets[i].values[j]
         assert len(values[i].marks) == len(expected_parameter_sets[i].marks)
         for j in range(len(values[i].marks)):
-            assert values[i].marks[j] == expected_parameter_sets[i].marks[j]  # type: ignore
+            assert values[i].marks[j] == expected_parameter_sets[i].marks[j]  # type: ignore[index]

@@ -586,7 +586,7 @@ class TestFillBlockchainValidTxs:
     ) -> None:
         """Test `FixtureHeader.join()`."""
         block = blockchain_test_fixture.blocks[0]
-        new_difficulty = block.header.difficulty - 1  # type: ignore
+        new_difficulty = block.header.difficulty - 1  # type: ignore[union-attr]
 
         new_state_root = Hash(12345)
         # See description of https://github.com/ethereum/execution-spec-tests/pull/398
@@ -597,13 +597,13 @@ class TestFillBlockchainValidTxs:
             transactions_trie=new_transactions_root,
         )
 
-        updated_block_header = header_new_fields.apply(block.header)  # type: ignore
+        updated_block_header = header_new_fields.apply(block.header)  # type: ignore[union-attr]
         assert updated_block_header.difficulty == new_difficulty
         assert updated_block_header.state_root == new_state_root
         assert updated_block_header.transactions_trie == Hash(
             new_transactions_root
         )
-        assert updated_block_header.block_hash != block.header.block_hash  # type: ignore
+        assert updated_block_header.block_hash != block.header.block_hash  # type: ignore[union-attr]
         assert isinstance(updated_block_header.transactions_trie, Hash)
 
 

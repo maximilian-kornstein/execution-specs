@@ -34,7 +34,7 @@ def test_transaction_test_filling(
             fork=fork,
         )
         .generate(
-            t8n=None,  # type: ignore
+            t8n=None,  # type: ignore[arg-type]
             fixture_format=TransactionFixture,
         )
         .fixture
@@ -85,7 +85,7 @@ def test_amsterdam_transaction_fixture_intrinsic_gas(
             fork=Amsterdam,
         )
         .generate(
-            t8n=None,  # type: ignore
+            t8n=None,  # type: ignore[arg-type]
             fixture_format=TransactionFixture,
         )
         .fixture

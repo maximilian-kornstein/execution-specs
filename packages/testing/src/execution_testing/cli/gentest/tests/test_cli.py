@@ -107,7 +107,7 @@ transactions_by_type = {
 
 @pytest.fixture
 def transaction_hash(tx_type: int) -> str:  # noqa: D103
-    return str(transactions_by_type[tx_type]["transaction"].hash)  # type: ignore
+    return str(transactions_by_type[tx_type]["transaction"].hash)  # type: ignore[attr-defined]
 
 
 @pytest.mark.parametrize("tx_type", list(transactions_by_type.keys()))

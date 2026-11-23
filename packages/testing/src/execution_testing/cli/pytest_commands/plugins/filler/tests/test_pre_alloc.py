@@ -93,11 +93,11 @@ def test_alloc_deploy_contract_with_storage() -> None:
     storage_a = {0: 42, 1: 100}
     contract_with_storage_1 = pre.deploy_contract(
         Op.STOP,
-        storage=storage_a,  # type: ignore
+        storage=storage_a,  # type: ignore[arg-type]
     )
     contract_with_storage_2 = pre.deploy_contract(
         Op.STOP,
-        storage=storage_a,  # type: ignore
+        storage=storage_a,  # type: ignore[arg-type]
     )
     contract_without_storage = pre.deploy_contract(Op.STOP, storage={})
     assert contract_with_storage_1 != contract_without_storage
@@ -114,11 +114,11 @@ def test_alloc_deploy_contract_with_storage() -> None:
     pre_2 = create_test_alloc()
     assert contract_with_storage_1 == pre_2.deploy_contract(
         Op.STOP,
-        storage=storage_a,  # type: ignore
+        storage=storage_a,  # type: ignore[arg-type]
     )
     assert contract_with_storage_2 == pre_2.deploy_contract(
         Op.STOP,
-        storage=storage_a,  # type: ignore
+        storage=storage_a,  # type: ignore[arg-type]
     )
 
 

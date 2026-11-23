@@ -300,8 +300,8 @@ def test_annotate_fills_expect_and_head_assertions() -> None:  # noqa: D103
     assert isinstance(fcu_b2, ForkchoiceUpdatedStep)
     assert ids(fcu_b2.expect) == ["applied", "refused"]
     # applied branch asserts the new head, refused branch asserts the old.
-    assert fcu_b2.branches["applied"][-1].latest == "b2"  # type: ignore
-    assert fcu_b2.branches["refused"][-1].latest == "a2"  # type: ignore
+    assert fcu_b2.branches["applied"][-1].latest == "b2"  # type: ignore[union-attr]
+    assert fcu_b2.branches["refused"][-1].latest == "a2"  # type: ignore[union-attr]
 
 
 def test_annotate_does_not_widen_author_expectations() -> None:  # noqa: D103

@@ -69,7 +69,7 @@ def _stack_argument_to_bytecode(
             signed=signed,
         )
     else:
-        arg = to_bytes(arg).lstrip(b"\0")  # type: ignore
+        arg = to_bytes(arg).lstrip(b"\0")  # type: ignore[arg-type]
         if arg == b"":
             # Pushing 0 is done with the PUSH1 opcode for
             # compatibility reasons.
@@ -6018,7 +6018,7 @@ def _mstore_operation(
     assert isinstance(offset, int)
     if isinstance(data, int):
         data = data.to_bytes(32, "big")
-    data = to_bytes(data)  # type: ignore
+    data = to_bytes(data)  # type: ignore[arg-type]
     bytecode = Bytecode()
     current_memory_size = 0
     for i in range(0, len(data), 32):

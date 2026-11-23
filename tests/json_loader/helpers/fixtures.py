@@ -109,7 +109,7 @@ class FixturesFile(File):
                         test_dict, self.config
                     ):
                         continue
-                    yield fixture_type.from_parent(  # type: ignore
+                    yield fixture_type.from_parent(  # type: ignore[misc]
                         parent=self,
                         name=key,
                         test_file=str(self.path),

@@ -131,7 +131,7 @@ class TransactionByHashResponse(Transaction):
         ..., validation_alias=AliasChoices("to_address", "to", "toAddress")
     )
 
-    v: HexNumber = Field(0, validation_alias=AliasChoices("v", "yParity"))  # type: ignore
+    v: HexNumber = Field(0, validation_alias=AliasChoices("v", "yParity"))  # type: ignore[assignment]
 
     @model_validator(mode="before")
     @classmethod
@@ -164,7 +164,7 @@ class ForkchoiceState(CamelModel):
 
 
 class BlockTransactionExceptionWithMessage(
-    ExceptionWithMessage[BlockException | TransactionException]  # type: ignore
+    ExceptionWithMessage[BlockException | TransactionException]  # type: ignore[type-var]
 ):
     """Exception returned from the execution client with a message."""
 

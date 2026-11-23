@@ -108,7 +108,7 @@ def post_state_validator(
     """
 
     def decorator(cls: Type[Any]) -> Type[Any]:
-        @model_validator(mode=mode)  # type: ignore
+        @model_validator(mode=mode)  # type: ignore[call-overload]
         def validate_post_state_fields(self: Any) -> Any:
             """Ensure exactly one post-state field is provided."""
             if mode == "after":

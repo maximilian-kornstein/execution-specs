@@ -1194,7 +1194,7 @@ class TestPydanticModelConversion:
         assert model_type(**json_repr) == model_instance
 
 
-EngineNewPayloadParametersAdapter = TypeAdapter(EngineNewPayloadParameters)  # type: ignore
+EngineNewPayloadParametersAdapter = TypeAdapter(EngineNewPayloadParameters)  # type: ignore[var-annotated]
 
 
 @pytest.mark.parametrize(

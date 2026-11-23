@@ -38,7 +38,7 @@ pytestmark = [
 auth_account_start_balance = 0
 
 
-class OversizedInt(FixedSizeBytes[2]):  # type: ignore
+class OversizedInt(FixedSizeBytes[2]):  # type: ignore[type-arg, valid-type]
     """
     Oversized 2-byte int.
 
@@ -48,7 +48,7 @@ class OversizedInt(FixedSizeBytes[2]):  # type: ignore
     pass
 
 
-class OversizedZeroInt(FixedSizeBytes[1]):  # type: ignore
+class OversizedZeroInt(FixedSizeBytes[1]):  # type: ignore[type-arg, valid-type]
     """
     Oversized 1-byte zero.
 
@@ -58,13 +58,13 @@ class OversizedZeroInt(FixedSizeBytes[1]):  # type: ignore
     pass
 
 
-class OversizedAddress(FixedSizeBytes[21]):  # type: ignore
+class OversizedAddress(FixedSizeBytes[21]):  # type: ignore[type-arg, valid-type]
     """Oversized Address Type."""
 
     pass
 
 
-class UndersizedAddress(FixedSizeBytes[19]):  # type: ignore
+class UndersizedAddress(FixedSizeBytes[19]):  # type: ignore[type-arg, valid-type]
     """Undersized Address Type."""
 
     pass
@@ -231,7 +231,7 @@ def test_invalid_tx_invalid_auth_chain_id_encoding(
     """
 
     class ModifiedAuthorizationTuple(AuthorizationTuple):
-        chain_id: oversized_type  # type: ignore
+        chain_id: oversized_type  # type: ignore[valid-type]
 
     authorization = ModifiedAuthorizationTuple(
         address=delegate_address,
@@ -334,7 +334,7 @@ def test_invalid_tx_invalid_nonce_as_list(
     auth_signer = pre.fund_eoa()
 
     class AuthorizationTupleWithNonceAsList(AuthorizationTuple):
-        nonce: List[HexNumber]  # type: ignore
+        nonce: List[HexNumber]  # type: ignore[assignment]
 
     tx = Transaction(
         gas_limit=100_000,
@@ -377,7 +377,7 @@ def test_invalid_tx_invalid_nonce_encoding(
     """
 
     class ModifiedAuthorizationTuple(AuthorizationTuple):
-        nonce: OversizedInt  # type: ignore
+        nonce: OversizedInt  # type: ignore[assignment]
 
     authorization = ModifiedAuthorizationTuple(
         address=delegate_address,
@@ -436,7 +436,7 @@ def test_invalid_tx_invalid_address(
     auth_signer = pre.fund_eoa()
 
     class ModifiedAuthorizationTuple(AuthorizationTuple):
-        address: address_type  # type: ignore
+        address: address_type  # type: ignore[valid-type]
 
     tx = Transaction(
         gas_limit=100_000,
@@ -600,7 +600,7 @@ def test_invalid_tx_invalid_authorization_tuple_encoded_as_bytes(
     """
 
     class ModifiedTransaction(Transaction):
-        authorization_list: List[Bytes] | None  # type: ignore
+        authorization_list: List[Bytes] | None  # type: ignore[assignment]
 
     auth_signer = pre.fund_eoa()
 

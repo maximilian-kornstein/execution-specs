@@ -1277,7 +1277,7 @@ def test_account_warming(
                     access_cost = cold_account_cost
                 addresses_to_check[delegated_account] = access_cost
 
-    callee_code: Bytecode = sum(  # type: ignore
+    callee_code: Bytecode = sum(  # type: ignore[assignment]
         (
             CodeGasMeasure(
                 code=Op.CALL(gas=0, address=check_address),

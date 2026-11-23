@@ -158,7 +158,7 @@ REFERENCE_SPEC_VERSION = "5c8f066acb210c704ef80c1033a941aa5374aac5"
                     declared_modulus_length=width,
                 ),
                 ModExpOutput(
-                    returned_data=FixedSizeBytes[width](  # type: ignore
+                    returned_data=FixedSizeBytes[width](  # type: ignore[misc]
                         (
                             (0x1234**0x234)
                             % (

@@ -47,7 +47,7 @@ def test_fixture_output_from_config_includes_generate_all_formats() -> None:
 
     config = MockConfig()
     fixture_output = FixtureOutput.from_config(
-        config  # type: ignore
+        config  # type: ignore[arg-type]
     )
 
     assert fixture_output.should_generate_all_formats is True
@@ -74,7 +74,7 @@ def test_tarball_output_does_not_auto_enable_generate_all_formats() -> None:
 
     config = MockConfig()
     fixture_output = FixtureOutput.from_config(
-        config  # type: ignore
+        config  # type: ignore[arg-type]
     )
 
     assert fixture_output.should_generate_all_formats is False
@@ -101,7 +101,7 @@ def test_regular_output_does_not_auto_enable_generate_all_formats() -> None:
 
     config = MockConfig()
     fixture_output = FixtureOutput.from_config(
-        config  # type: ignore
+        config  # type: ignore[arg-type]
     )
 
     assert fixture_output.should_generate_all_formats is False
@@ -128,7 +128,7 @@ def test_explicit_generate_all_formats_with_tarball() -> None:
 
     config = MockConfig()
     fixture_output = FixtureOutput.from_config(
-        config  # type: ignore
+        config  # type: ignore[arg-type]
     )
 
     assert fixture_output.should_generate_all_formats is True

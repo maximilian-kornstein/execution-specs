@@ -252,7 +252,7 @@ class Hardfork:
 
         for criteria, name in config:
             mod = importlib.import_module("ethereum." + name)
-            mod.FORK_CRITERIA = criteria  # type: ignore
+            mod.FORK_CRITERIA = criteria  # type: ignore[attr-defined]
             forks.append(cls(mod))
 
         return forks

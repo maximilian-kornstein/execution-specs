@@ -7,7 +7,7 @@ from os.path import realpath
 from pathlib import Path
 from typing import Any, ClassVar, List
 
-import ckzg  # type: ignore
+import ckzg  # type: ignore[import-not-found]
 import platformdirs
 from filelock import FileLock
 

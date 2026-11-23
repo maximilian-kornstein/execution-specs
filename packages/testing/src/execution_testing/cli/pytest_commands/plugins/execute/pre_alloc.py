@@ -192,7 +192,7 @@ class PendingTransaction(Transaction):
     the transaction is sent.
     """
 
-    value: HexNumber | None = None  # type: ignore
+    value: HexNumber | None = None  # type: ignore[assignment]
 
 
 @dataclass
@@ -552,7 +552,7 @@ class Alloc(SharedAlloc):
         )
 
         if not isinstance(storage, Storage):
-            storage = Storage(storage)  # type: ignore
+            storage = Storage(storage)  # type: ignore[arg-type]
 
         if stub is not None:
             if stub not in self._address_stubs:

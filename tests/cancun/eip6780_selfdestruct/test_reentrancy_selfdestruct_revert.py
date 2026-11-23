@@ -192,7 +192,7 @@ def test_reentrancy_selfdestruct_revert(
         else:
             # Callcode executed first selfdestruct from sender.
             # Sender is deleted.
-            post[executor_contract_address] = Account.NONEXISTENT  # type: ignore
+            post[executor_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
         # Original selfdestruct account remains in state
         post[selfdestruct_contract_address] = Account(
@@ -220,7 +220,7 @@ def test_reentrancy_selfdestruct_revert(
                 balance=0, code=selfdestruct_contract_bytecode, storage={}
             )
         else:
-            post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+            post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
         # Suicide destination
         post[selfdestruct_recipient_address] = Account(

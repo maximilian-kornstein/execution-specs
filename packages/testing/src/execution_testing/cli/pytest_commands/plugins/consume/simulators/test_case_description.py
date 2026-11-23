@@ -197,7 +197,7 @@ def test_case_description(
     else:
         # this prefix was included in the fixture description field for
         # fixtures <= v4.3.0
-        test_docstring = fixture.info["description"].replace(  # type: ignore
+        test_docstring = fixture.info["description"].replace(  # type: ignore[union-attr]
             "Test function documentation:\n", ""
         )
 

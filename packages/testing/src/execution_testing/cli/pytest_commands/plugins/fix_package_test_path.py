@@ -14,7 +14,7 @@ def pytest_collection_modifyitems(items: List[pytest.Item]) -> None:
     name.
     """
     for item in items:
-        original_name = item.originalname  # type: ignore
+        original_name = item.originalname  # type: ignore[attr-defined]
         remove = f"{original_name}["
         if item.name.startswith(remove):
             item.name = item.name.removeprefix(remove)[:-1]

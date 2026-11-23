@@ -281,16 +281,16 @@ class BLSPointGenerator:
                 base_point = (x, y)
                 result = multiply(base_point, cofactor)
                 return (
-                    (int(result[0].coeffs[0]), int(result[0].coeffs[1])),  # type: ignore
-                    (int(result[1].coeffs[0]), int(result[1].coeffs[1])),  # type: ignore
+                    (int(result[0].coeffs[0]), int(result[0].coeffs[1])),  # type: ignore[index]
+                    (int(result[1].coeffs[0]), int(result[1].coeffs[1])),  # type: ignore[index]
                 )
             else:
                 # For G1, the point is given as (x, y).
-                x = FQ(point[0])  # type: ignore
-                y = FQ(point[1])  # type: ignore
+                x = FQ(point[0])  # type: ignore[assignment]
+                y = FQ(point[1])  # type: ignore[assignment]
                 base_point = (x, y)
                 result = multiply(base_point, cofactor)
-                return (int(result[0]), int(result[1]))  # type: ignore
+                return (int(result[0]), int(result[1]))  # type: ignore[arg-type, index]
         except Exception as e:
             raise ValueError("Failed to multiply point by cofactor") from e
 

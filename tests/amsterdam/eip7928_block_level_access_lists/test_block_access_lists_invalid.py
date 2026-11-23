@@ -221,7 +221,7 @@ def test_bal_invalid_storage_value(
     sender = pre.fund_eoa(amount=10**18)
 
     # Simple storage contract with canary values
-    storage = Storage({1: 0, 2: 0, 3: 0})  # type: ignore
+    storage = Storage({1: 0, 2: 0, 3: 0})  # type: ignore[dict-item]
     contract = pre.deploy_contract(
         code=Op.SSTORE(1, 1) + Op.SSTORE(2, 2) + Op.SSTORE(3, 3),
         storage=storage.canary(),
@@ -526,7 +526,7 @@ def test_bal_invalid_complex_corruption(
     sender = pre.fund_eoa(amount=10**18)
     receiver = pre.fund_eoa(amount=0)
 
-    storage = Storage({1: 0, 2: 0})  # type: ignore
+    storage = Storage({1: 0, 2: 0})  # type: ignore[dict-item]
     contract = pre.deploy_contract(
         code=Op.SSTORE(1, 1) + Op.SSTORE(2, 2),
         storage=storage.canary(),

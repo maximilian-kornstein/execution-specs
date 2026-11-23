@@ -359,6 +359,6 @@ def test_tstore_rollback_on_failed_create(
     # deployed; the caller nonce still advances once per attempt.
     post = {caller_address: Account(nonce=3)}
     for created_address in created_addresses:
-        post[created_address] = Account.NONEXISTENT  # type: ignore
+        post[created_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     state_test(pre=pre, post=post, tx=tx)

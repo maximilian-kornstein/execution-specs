@@ -151,12 +151,12 @@ def pytest_configure(config: pytest.Config) -> None:
     if genesis_config_file:
         genesis_config_contents = genesis_config_file.read_text()
         genesis_config = Genesis.model_validate_json(genesis_config_contents)
-        config.network = genesis_config.network_config()  # type: ignore
+        config.network = genesis_config.network_config()  # type: ignore[attr-defined]
     #   case 2: genesis_config_url
     elif genesis_config_url:
         genesis_config_contents = requests.get(genesis_config_url).text
         genesis_config = Genesis.model_validate_json(genesis_config_contents)
-        config.network = genesis_config.network_config()  # type: ignore
+        config.network = genesis_config.network_config()  # type: ignore[attr-defined]
     #   case 3: network_name
     elif network_name:
         # load provided networks file
@@ -177,7 +177,7 @@ def pytest_configure(config: pytest.Config) -> None:
                 f'Network "{network_name}" could not be found in file '
                 f'"{network_configs_path}".'
             )
-        config.network = network_configs.root[network_name]  # type: ignore
+        config.network = network_configs.root[network_name]  # type: ignore[attr-defined]
 
     # determine whether to activate majority mode or not
     if clients:

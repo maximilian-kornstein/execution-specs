@@ -47,7 +47,7 @@ def test_transient_storage_unset_values(
     code = sum(Op.SSTORE(slot, Op.TLOAD(slot)) for slot in slots_under_test)
 
     code_address = pre.deploy_contract(
-        code=code,  # type: ignore
+        code=code,  # type: ignore[arg-type]
         storage=dict.fromkeys(slots_under_test, 1),
     )
 
@@ -75,7 +75,7 @@ def test_tload_after_tstore(state_test: StateTestFiller, pre: Alloc) -> None:
         for slot in slots_under_test
     )
     code_address = pre.deploy_contract(
-        code=code,  # type: ignore
+        code=code,  # type: ignore[arg-type]
         storage=dict.fromkeys(slots_under_test, 0xFF),
     )
 
@@ -108,7 +108,7 @@ def test_tload_after_sstore(state_test: StateTestFiller, pre: Alloc) -> None:
         for slot in slots_under_test
     )
     code_address = pre.deploy_contract(
-        code=code,  # type: ignore
+        code=code,  # type: ignore[arg-type]
         storage=dict.fromkeys(slots_under_test, 1),
     )
 
@@ -148,7 +148,7 @@ def test_tload_after_tstore_is_zero(
     )
 
     code_address = pre.deploy_contract(
-        code=code,  # type: ignore
+        code=code,  # type: ignore[arg-type]
         storage=dict.fromkeys(slots_to_write + slots_to_read, 0xFFFF),
     )
 

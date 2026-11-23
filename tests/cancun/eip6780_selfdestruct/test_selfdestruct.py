@@ -392,7 +392,7 @@ def test_create_selfdestruct_same_tx(
             storage={},
         )
     else:
-        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     if fork.is_eip_enabled(7708):
         expected_logs = []
@@ -539,7 +539,7 @@ def test_self_destructing_initcode(
         ),
         selfdestruct_contract_address: Account.NONEXISTENT
         if selfdestruct_contract_address_remaining_balance == 0
-        else Account(balance=selfdestruct_contract_address_remaining_balance),  # type: ignore
+        else Account(balance=selfdestruct_contract_address_remaining_balance),  # type: ignore[dict-item]
         sendall_recipient_addresses[0]: Account(
             balance=sendall_amount, storage={0: 1}
         ),
@@ -617,7 +617,7 @@ def test_self_destructing_initcode_create_tx(
     sendall_amount = selfdestruct_contract_initial_balance + tx_value
 
     post: Dict[Address, Account] = {
-        selfdestruct_contract_address: Account.NONEXISTENT,  # type: ignore
+        selfdestruct_contract_address: Account.NONEXISTENT,  # type: ignore[dict-item]
         sendall_recipient_addresses[0]: Account(
             balance=sendall_amount, storage={0: 1}
         ),
@@ -801,7 +801,7 @@ def test_recreate_self_destructed_contract_different_txs(
             storage={},
         )
     else:
-        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
     if not self_target:
         post[sendall_recipient_addresses[0]] = Account(
             balance=sendall_amount, storage={0: 1}
@@ -1031,7 +1031,7 @@ def test_selfdestruct_pre_existing(
             storage={0: call_times},
         )
     else:
-        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     if fork.is_eip_enabled(7708):
         expected_logs = []
@@ -1131,7 +1131,7 @@ def test_selfdestruct_created_same_block_different_tx(
             balance=0, storage={0: call_times}
         )
     else:
-        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+        post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     tx1_receipt = None
     tx2_receipt = None
@@ -1321,7 +1321,7 @@ def test_calling_from_new_contract_to_pre_existing_contract(
         entry_code_address: Account(
             storage=entry_code_storage,
         ),
-        selfdestruct_contract_address: Account.NONEXISTENT,  # type: ignore
+        selfdestruct_contract_address: Account.NONEXISTENT,  # type: ignore[dict-item]
         sendall_recipient_addresses[0]: Account(
             balance=sendall_amount, storage={0: 1}
         ),
@@ -1517,7 +1517,7 @@ def test_calling_from_pre_existing_contract_to_new_contract(
             balance=0,
         )
     else:
-        post[caller_address] = Account.NONEXISTENT  # type: ignore
+        post[caller_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     if fork.is_eip_enabled(7708):
         # SELFDESTRUCT runs in the caller (pre-existing) contract's context
@@ -1769,7 +1769,7 @@ def test_create_selfdestruct_same_tx_increased_nonce(
             code=b"\x00",
         )
 
-    post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore
+    post[selfdestruct_contract_address] = Account.NONEXISTENT  # type: ignore[assignment]
 
     if fork.is_eip_enabled(7708):
         expected_logs = []
@@ -1892,7 +1892,7 @@ def test_create_and_destroy_multiple_contracts_same_tx(
 
     # All created contracts should be non-existent
     for addr in contract_addresses:
-        post[addr] = Account.NONEXISTENT  # type: ignore
+        post[addr] = Account.NONEXISTENT  # type: ignore[assignment]
 
     if fork.is_eip_enabled(7708):
         # Each contract SELFDESTRUCTs to a shared recipient after being created
@@ -2069,7 +2069,7 @@ def test_create_multiple_contracts_destroy_one_then_destroy_other_next_tx(
     post: Dict[Address, Account] = {
         entry_code_address: Account(storage=entry_code_storage),
         # Contract A is always destroyed (created and destroyed same tx)
-        contract_a_address: Account.NONEXISTENT,  # type: ignore
+        contract_a_address: Account.NONEXISTENT,  # type: ignore[dict-item]
     }
 
     if eip_enabled:
@@ -2085,7 +2085,7 @@ def test_create_multiple_contracts_destroy_one_then_destroy_other_next_tx(
         )
     else:
         # Before EIP-6780: Contract B is destroyed in tx2
-        post[contract_b_address] = Account.NONEXISTENT  # type: ignore
+        post[contract_b_address] = Account.NONEXISTENT  # type: ignore[assignment]
         post[sendall_recipient] = Account(
             balance=selfdestruct_contract_initial_balance * 2,
             storage={0: 1},
@@ -2195,7 +2195,7 @@ def test_parent_creates_child_selfdestruct_one(
     }
 
     if destroy_parent:
-        post[parent_address] = Account.NONEXISTENT  # type: ignore
+        post[parent_address] = Account.NONEXISTENT  # type: ignore[assignment]
         post[child_address] = Account(
             storage={0: 0},
             balance=selfdestruct_contract_initial_balance,
@@ -2205,7 +2205,7 @@ def test_parent_creates_child_selfdestruct_one(
             storage={0: 1},
         )
     else:
-        post[child_address] = Account.NONEXISTENT  # type: ignore
+        post[child_address] = Account.NONEXISTENT  # type: ignore[assignment]
         post[parent_address] = Account(
             storage={0: 1, 1: child_address},
             balance=selfdestruct_contract_initial_balance,
@@ -2373,14 +2373,14 @@ def test_recursive_contract_creation_and_selfdestruct(
         # All contracts self-destruct
         total_sendall = selfdestruct_contract_initial_balance * recursion_depth
         for addr in contract_addresses:
-            post[addr] = Account.NONEXISTENT  # type: ignore
+            post[addr] = Account.NONEXISTENT  # type: ignore[assignment]
     else:
         # Only the deepest contract (last in list) self-destructs
         total_sendall = selfdestruct_contract_initial_balance
         for i, addr in enumerate(contract_addresses):
             if i == len(contract_addresses) - 1:
                 # Deepest - destroyed
-                post[addr] = Account.NONEXISTENT  # type: ignore
+                post[addr] = Account.NONEXISTENT  # type: ignore[assignment]
             else:
                 # Survives with storage: slot 0 = call count, slot 1 = child
                 # Retains its initial balance since it didn't self-destruct

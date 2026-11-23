@@ -123,7 +123,7 @@ class EOA(Address):
         return self.__class__(Address(self), key=self.key, nonce=self.nonce)
 
 
-class AllocGroupHash(FixedSizeBytes[8]):  # type: ignore
+class AllocGroupHash(FixedSizeBytes[8]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent hashes used to group allocs."""
 
     @classmethod

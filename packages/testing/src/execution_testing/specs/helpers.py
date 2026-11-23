@@ -203,7 +203,7 @@ class TransactionExceptionInfo(ExceptionInfo):
         """Initialize the exception."""
         super().__init__(
             execution_context=ExecutionContext.TRANSACTION,
-            want_exception=tx.error,  # type: ignore
+            want_exception=tx.error,  # type: ignore[arg-type]
             context={"index": tx_index, "nonce": tx.nonce},
             **kwargs,
         )

@@ -623,7 +623,7 @@ def pytest_configure(config: pytest.Config) -> None:
             """,
             returncode=pytest.ExitCode.USAGE_ERROR,
         )
-    config.selected_fork_set = selected_fork_set  # type: ignore
+    config.selected_fork_set = selected_fork_set  # type: ignore[attr-defined]
 
     if not selected_fork_set:
         print(
@@ -733,7 +733,7 @@ def session_fork(
         hasattr(request.config, "single_fork_mode")
         and request.config.single_fork_mode
     ):
-        return list(request.config.selected_fork_set)[0]  # type: ignore
+        return list(request.config.selected_fork_set)[0]  # type: ignore[attr-defined]
     raise AssertionError(
         "Plugin used `session_fork` fixture without the correct "
         "configuration (single_fork_mode)."
@@ -1322,7 +1322,7 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
     # Get the intersection between the test's validity marker and the current
     # filling parameters.
     intersection_set: Set[Fork | TransitionFork] = (
-        test_fork_set & metafunc.config.selected_fork_set  # type: ignore
+        test_fork_set & metafunc.config.selected_fork_set  # type: ignore[attr-defined]
     )
 
     if "fork" not in metafunc.fixturenames:

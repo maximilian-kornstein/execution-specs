@@ -376,7 +376,7 @@ def generate_system_contract_deploy_test(
                 or test_type != DeploymentTestType.DEPLOY_AFTER_FORK,
             )
 
-        wrapper.__name__ = func.__name__  # type: ignore
+        wrapper.__name__ = func.__name__  # type: ignore[attr-defined]
         wrapper.__doc__ = func.__doc__
 
         return wrapper
@@ -504,7 +504,7 @@ def generate_system_contract_error_test() -> Callable[
                 sync_block=test_type == SystemContractTestType.GAS_LIMIT,
             )
 
-        wrapper.__name__ = func.__name__  # type: ignore
+        wrapper.__name__ = func.__name__  # type: ignore[attr-defined]
         wrapper.__doc__ = func.__doc__
 
         return wrapper

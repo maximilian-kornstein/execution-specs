@@ -337,7 +337,7 @@ def test_beacon_root_selfdestruct(
     )
     post = {
         self_destruct_caller_address: Account(
-            storage=Storage({0: 0xBA1}),  # type: ignore
+            storage=Storage({0: 0xBA1}),  # type: ignore[dict-item]
         )
     }
     blockchain_test(

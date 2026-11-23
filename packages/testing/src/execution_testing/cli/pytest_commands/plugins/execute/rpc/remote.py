@@ -148,13 +148,13 @@ def pytest_configure(config: pytest.Config) -> None:
         # TODO: Perform a request to the engine endpoint to verify that the JWT
         # secret is valid. Potentially could be `engine_getClientVersionV1` but
         # need to implement this in rpc.py.
-    config.engine_rpc = engine_rpc  # type: ignore
+    config.engine_rpc = engine_rpc  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
 def engine_rpc(request: pytest.FixtureRequest) -> EngineRPC | None:
     """Execute remote command does not have access to the engine RPC."""
-    return request.config.engine_rpc  # type: ignore
+    return request.config.engine_rpc  # type: ignore[attr-defined]
 
 
 @pytest.fixture(autouse=True, scope="session")

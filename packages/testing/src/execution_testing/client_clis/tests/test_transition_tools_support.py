@@ -70,7 +70,7 @@ def test_ci_multi_t8n_support(
 
 @pytest.mark.parametrize(
     "fork",
-    sorted(fork_set, key=lambda f: f.__name__),  # type: ignore
+    sorted(fork_set, key=lambda f: f.__name__),  # type: ignore[attr-defined]
 )
 def test_t8n_support(fork: Fork, installed_t8n: TransitionTool) -> None:
     """Stress test that sends all possible t8n interactions."""

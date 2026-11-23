@@ -113,9 +113,9 @@ class EnvironmentGeneric(CamelModel, Generic[NumberBoundTypeVar]):
     gas_limit: NumberBoundTypeVar = Field(
         default_factory=lambda: EnvironmentDefaults.gas_limit,
         alias="currentGasLimit",
-    )  # type: ignore
-    number: NumberBoundTypeVar = Field(1, alias="currentNumber")  # type: ignore
-    timestamp: NumberBoundTypeVar = Field(1_000, alias="currentTimestamp")  # type: ignore
+    )  # type: ignore[assignment]
+    number: NumberBoundTypeVar = Field(1, alias="currentNumber")  # type: ignore[assignment]
+    timestamp: NumberBoundTypeVar = Field(1_000, alias="currentTimestamp")  # type: ignore[assignment]
     prev_randao: NumberBoundTypeVar | None = Field(None, alias="currentRandom")
     difficulty: NumberBoundTypeVar | None = Field(
         None, alias="currentDifficulty"

@@ -66,7 +66,7 @@ DEFAULT_DEPOSIT_REQUEST_LOG_DATA_DICT = {
     "index_data": bytes(DEFAULT_DEPOSIT_REQUEST.index),
 }
 DEFAULT_REQUEST_LOG = create_deposit_log_bytes(
-    **DEFAULT_DEPOSIT_REQUEST_LOG_DATA_DICT  # type: ignore
+    **DEFAULT_DEPOSIT_REQUEST_LOG_DATA_DICT  # type: ignore[arg-type]
 )
 
 
@@ -190,9 +190,9 @@ def test_invalid_layout(
     Test deposit contract emitting logs with invalid layouts (sizes/offsets).
     """
     log_params = {**DEFAULT_DEPOSIT_REQUEST_LOG_DATA_DICT}
-    log_params[log_argument] = 0 if value == "zero" else 2**256 - 1  # type: ignore
+    log_params[log_argument] = 0 if value == "zero" else 2**256 - 1  # type: ignore[assignment]
 
-    deposit_request_log = create_deposit_log_bytes(**log_params)  # type: ignore
+    deposit_request_log = create_deposit_log_bytes(**log_params)  # type: ignore[arg-type]
 
     bytecode = Om.MSTORE(deposit_request_log) + Op.LOG1(
         0,

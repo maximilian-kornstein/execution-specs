@@ -73,15 +73,15 @@ class AuthorizationTupleGeneric(
 ):
     """Authorization tuple for transactions."""
 
-    chain_id: NumberBoundTypeVar = Field(0)  # type: ignore
+    chain_id: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
     address: Address
-    nonce: NumberBoundTypeVar = Field(0)  # type: ignore
+    nonce: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
 
     v: NumberBoundTypeVar = Field(
         default=0, validation_alias=AliasChoices("v", "yParity")
-    )  # type: ignore
-    r: NumberBoundTypeVar = Field(0)  # type: ignore
-    s: NumberBoundTypeVar = Field(0)  # type: ignore
+    )  # type: ignore[assignment]
+    r: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
+    s: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
 
     magic: ClassVar[int] = 0x05
 
@@ -201,26 +201,26 @@ class TransactionGeneric(BaseModel, Generic[NumberBoundTypeVar]):
     FixtureTransaction (blockchain).
     """
 
-    ty: NumberBoundTypeVar = Field(0, alias="type")  # type: ignore
+    ty: NumberBoundTypeVar = Field(0, alias="type")  # type: ignore[assignment]
     chain_id: NumberBoundTypeVar = Field(
         default_factory=lambda: ChainConfigDefaults.chain_id,
         validate_default=True,
     )
-    nonce: NumberBoundTypeVar = Field(0)  # type: ignore
+    nonce: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
     gas_price: NumberBoundTypeVar | None = None
     max_priority_fee_per_gas: NumberBoundTypeVar | None = None
     max_fee_per_gas: NumberBoundTypeVar | None = None
-    gas_limit: NumberBoundTypeVar = Field(21_000)  # type: ignore
+    gas_limit: NumberBoundTypeVar = Field(21_000)  # type: ignore[assignment]
     to: Address | None = None
-    value: NumberBoundTypeVar = Field(0)  # type: ignore
+    value: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
     data: Bytes = Field(Bytes(b""))
     access_list: List[AccessList] | None = None
     max_fee_per_blob_gas: NumberBoundTypeVar | None = None
     blob_versioned_hashes: Sequence[Hash] | None = None
 
-    v: NumberBoundTypeVar = Field(0)  # type: ignore
-    r: NumberBoundTypeVar = Field(0)  # type: ignore
-    s: NumberBoundTypeVar = Field(0)  # type: ignore
+    v: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
+    r: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
+    s: NumberBoundTypeVar = Field(0)  # type: ignore[assignment]
     sender: EOA | None = None
 
     def metadata_string(self) -> str | None:

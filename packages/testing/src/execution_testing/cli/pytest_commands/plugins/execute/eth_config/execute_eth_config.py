@@ -38,7 +38,7 @@ def eth_config_response(eth_rpc: List[EthRPC]) -> EthConfigResponse | None:
 @pytest.fixture(scope="function")
 def network(request: pytest.FixtureRequest) -> NetworkConfig:
     """Get the network that will be used to verify all tests."""
-    return request.config.network  # type: ignore
+    return request.config.network  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")

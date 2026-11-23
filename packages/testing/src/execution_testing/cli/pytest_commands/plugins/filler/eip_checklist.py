@@ -618,4 +618,4 @@ class EIPChecklistCollector:
                 )
 
         if checklist_doc_gen:
-            config.checklist_props = checklist_props  # type: ignore
+            config.checklist_props = checklist_props  # type: ignore[attr-defined]

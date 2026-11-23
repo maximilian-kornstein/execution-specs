@@ -8,7 +8,7 @@ from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
-    import orjson  # type: ignore  # Fast JSON library (optional dependency)
+    import orjson  # type: ignore[import-not-found]  # Fast JSON library (optional dependency)
 
     HAS_ORJSON = True
 except ImportError:

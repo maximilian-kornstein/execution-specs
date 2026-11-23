@@ -177,7 +177,7 @@ def blocks(
     """Return the list of blocks that should be included in the test."""
     blocks: List[Block] = []
 
-    for block_interactions, block_included_requests in zip_longest(  # type: ignore
+    for block_interactions, block_included_requests in zip_longest(  # type: ignore[var-annotated]
         system_contract_interactions_per_block_copy,
         included_requests,
         fillvalue=[],

@@ -58,7 +58,7 @@ class SpecHelpers:
         - validity of the timestamp input used within the call.
         """
         # By default assume the call is unsuccessful and all keys are zero
-        storage = Storage(dict.fromkeys(range(4), 0))  # type: ignore
+        storage = Storage(dict.fromkeys(range(4), 0))  # type: ignore[arg-type]
         if valid_call and valid_input:
             # beacon root contract call is successful
             storage[0] = 1

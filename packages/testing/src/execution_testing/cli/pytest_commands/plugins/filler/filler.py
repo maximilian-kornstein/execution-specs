@@ -1221,7 +1221,7 @@ def session_t8n(
     request: pytest.FixtureRequest,
 ) -> Generator[TransitionTool, None, None]:
     """Return configured transition tool for the session."""
-    t8n: TransitionTool = request.config.t8n  # type: ignore
+    t8n: TransitionTool = request.config.t8n  # type: ignore[attr-defined]
     if not t8n.exception_mapper.reliable:
         t8n_name = t8n.__class__.__name__
         warnings.warn(
@@ -1487,7 +1487,7 @@ def get_fixture_collection_scope(
     if config.fixture_output.is_stdout:  # type: ignore[attr-defined]
         return "session"
     if (
-        config.fixture_output.single_fixture_per_file  # type: ignore
+        config.fixture_output.single_fixture_per_file  # type: ignore[attr-defined]
     ):
         return "function"
     return "module"
@@ -1550,7 +1550,7 @@ def node_to_test_info(node: pytest.Item) -> TestInfo:
     return TestInfo(
         name=strip_any_xdist_group_suffix(node.name),
         id=strip_any_xdist_group_suffix(node.nodeid),
-        original_name=node.originalname,  # type: ignore
+        original_name=node.originalname,  # type: ignore[attr-defined]
         module_path=Path(node.path),
     )
 
@@ -1615,7 +1615,7 @@ def base_test_parametrizer(cls: Type[BaseTest]) -> Any:
     ]
     init_current_test: Callable[..., None] | None = None
 
-    class BaseTestWrapper(cls):  # type: ignore
+    class BaseTestWrapper(cls):  # type: ignore[misc, valid-type]
         """
         Spec type with the current test's setup injected into `__init__`.
 
@@ -1690,7 +1690,7 @@ def base_test_parametrizer(cls: Type[BaseTest]) -> Any:
             if "expected_benchmark_gas_used" not in kwargs:
                 kwargs["expected_benchmark_gas_used"] = gas_benchmark_value
             kwargs["fork"] = fork
-            op_mode: OpMode = request.config.op_mode  # type: ignore
+            op_mode: OpMode = request.config.op_mode  # type: ignore[attr-defined]
             kwargs["operation_mode"] = op_mode
             kwargs["is_tx_gas_heavy_test"] = is_tx_gas_heavy_test
             kwargs["is_exception_test"] = is_exception_test
@@ -1730,7 +1730,7 @@ def base_test_parametrizer(cls: Type[BaseTest]) -> Any:
             super(BaseTestWrapper, self).__init__(*args, **kwargs)
 
             # Get the filling session from config
-            session: FillingSession = request.config.filling_session  # type: ignore
+            session: FillingSession = request.config.filling_session  # type: ignore[attr-defined]
             assert isinstance(session, FillingSession)
 
             group_salt: str | None = None
@@ -1815,7 +1815,7 @@ def base_test_parametrizer(cls: Type[BaseTest]) -> Any:
                     == OpMode.OPTIMIZE_GAS_POST_PROCESSING
                 ):
                     gas_optimized_tests = (
-                        request.config.gas_optimized_tests  # type: ignore
+                        request.config.gas_optimized_tests  # type: ignore[attr-defined]
                     )
                     assert gas_optimized_tests is not None
                     # Force adding something to the list, even if it's

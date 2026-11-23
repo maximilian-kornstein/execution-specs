@@ -275,7 +275,7 @@ class FixedSizeHexNumber(int, ToStringSchema):
     def __class_getitem__(cls, length: int) -> Type["FixedSizeHexNumber"]:
         """Create a new FixedSizeHexNumber class with the given length."""
 
-        class Sized(cls):  # type: ignore
+        class Sized(cls):  # type: ignore[misc, valid-type]
             byte_length = length
             max_value = 2 ** (8 * length) - 1
 
@@ -327,7 +327,7 @@ class FixedSizeHexNumber(int, ToStringSchema):
         )
 
 
-class HashInt(FixedSizeHexNumber[32]):  # type: ignore
+class HashInt(FixedSizeHexNumber[32]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent hashes in tests."""
 
     pass
@@ -342,7 +342,7 @@ class FixedSizeBytes(Bytes):
     def __class_getitem__(cls, length: int) -> Type["FixedSizeBytes"]:
         """Create a new FixedSizeBytes class with the given length."""
 
-        class Sized(cls):  # type: ignore
+        class Sized(cls):  # type: ignore[misc, valid-type]
             byte_length = length
 
         Sized._sized_ = Sized
@@ -408,7 +408,7 @@ class FixedSizeBytes(Bytes):
         )
 
 
-class ForkHash(FixedSizeBytes[4]):  # type: ignore
+class ForkHash(FixedSizeBytes[4]):  # type: ignore[type-arg, valid-type]
     """
     Class that helps represent the CRC config hashes and identifiers of a fork.
     """
@@ -416,7 +416,7 @@ class ForkHash(FixedSizeBytes[4]):  # type: ignore
     pass
 
 
-class Address(FixedSizeBytes[20]):  # type: ignore
+class Address(FixedSizeBytes[20]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent Ethereum addresses in tests."""
 
     label: str | None = None
@@ -439,13 +439,13 @@ class Address(FixedSizeBytes[20]):  # type: ignore
         return instance
 
 
-class Hash(FixedSizeBytes[32]):  # type: ignore
+class Hash(FixedSizeBytes[32]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent hashes in tests."""
 
     pass
 
 
-class StorageKey(FixedSizeBytes[32]):  # type: ignore
+class StorageKey(FixedSizeBytes[32]):  # type: ignore[type-arg, valid-type]
     """
     Storage key type that automatically applies left padding for values shorter
     than 32 bytes.
@@ -464,25 +464,25 @@ class StorageKey(FixedSizeBytes[32]):  # type: ignore
         return super().__new__(cls, input_bytes, **kwargs)
 
 
-class Bloom(FixedSizeBytes[256]):  # type: ignore
+class Bloom(FixedSizeBytes[256]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent blooms in tests."""
 
     pass
 
 
-class HeaderNonce(FixedSizeBytes[8]):  # type: ignore
+class HeaderNonce(FixedSizeBytes[8]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent the header nonce in tests."""
 
     pass
 
 
-class BLSPublicKey(FixedSizeBytes[48]):  # type: ignore
+class BLSPublicKey(FixedSizeBytes[48]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent BLS public keys in tests."""
 
     pass
 
 
-class BLSSignature(FixedSizeBytes[96]):  # type: ignore
+class BLSSignature(FixedSizeBytes[96]):  # type: ignore[type-arg, valid-type]
     """Class that helps represent BLS signatures in tests."""
 
     pass

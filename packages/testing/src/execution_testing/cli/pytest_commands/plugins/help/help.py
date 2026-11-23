@@ -221,7 +221,7 @@ def show_specific_help(
     Print help options filtered by specific substrings from the given
     configuration.
     """
-    pytest_ini = Path(config.inifile)  # type: ignore
+    pytest_ini = Path(config.inifile)  # type: ignore[attr-defined]
     if pytest_ini.name != expected_ini:
         raise ValueError(
             f"Unexpected {expected_ini}!={pytest_ini.name} file option "

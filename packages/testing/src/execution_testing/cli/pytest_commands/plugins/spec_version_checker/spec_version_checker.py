@@ -191,7 +191,7 @@ class EIPSpecTestItem(Item):
 
         """
         super().__init__(name, parent, **kwargs)
-        self.module = None  # type: ignore
+        self.module = None  # type: ignore[assignment]
         self.github_token = None
 
     @classmethod

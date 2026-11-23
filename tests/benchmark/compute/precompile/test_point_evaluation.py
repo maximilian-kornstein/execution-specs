@@ -3,7 +3,7 @@
 import math
 from functools import cache
 
-import ckzg  # type: ignore
+import ckzg  # type: ignore[import-not-found]
 import pytest
 from execution_testing import (
     Address,

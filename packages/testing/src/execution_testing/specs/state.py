@@ -450,9 +450,9 @@ class StateTest(BaseTest):
         if not fork.header_prev_randao_required():
             kwargs["difficulty"] = self.env.difficulty
         if "block_exception" in self.model_fields_set:
-            kwargs["exception"] = self.block_exception  # type: ignore
+            kwargs["exception"] = self.block_exception  # type: ignore[assignment]
         elif "error" in self.tx.model_fields_set:
-            kwargs["exception"] = self.tx.error  # type: ignore
+            kwargs["exception"] = self.tx.error  # type: ignore[assignment]
         return [Block(**kwargs)]
 
     def generate_blockchain_test(self) -> BlockchainTest:

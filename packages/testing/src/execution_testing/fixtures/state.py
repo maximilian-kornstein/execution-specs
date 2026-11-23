@@ -36,7 +36,7 @@ class FixtureEnvironment(EnvironmentGeneric[ZeroPaddedHexNumber]):
     # via model_dump(), which includes many fields not in EnvironmentGeneric.
     model_config = CamelModel.model_config | {"extra": "ignore"}
 
-    prev_randao: Hash | None = Field(None, alias="currentRandom")  # type: ignore
+    prev_randao: Hash | None = Field(None, alias="currentRandom")  # type: ignore[assignment]
 
 
 class FixtureTransaction(TransactionFixtureConverter):

@@ -361,7 +361,7 @@ def base_test_parametrizer(cls: Type[BaseTest]) -> Any:
                 "Engine RPC is required for this format."
             )
 
-        class BaseTestWrapper(cls):  # type: ignore
+        class BaseTestWrapper(cls):  # type: ignore[misc, valid-type]
             __is_base_test_wrapper__ = True
 
             def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -506,7 +506,7 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
     Pytest hook used to dynamically generate test cases for each fixture format
     a given test spec supports.
     """
-    engine_rpc_supported = metafunc.config.engine_rpc_supported  # type: ignore
+    engine_rpc_supported = metafunc.config.engine_rpc_supported  # type: ignore[attr-defined]
     for test_type in BaseTest.spec_types.values():
         if test_type.pytest_parameter_name() in metafunc.fixturenames:
             parameter_set = []
@@ -518,7 +518,7 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
                     execute_format.requires_engine_rpc
                     and not engine_rpc_supported
                 ):
-                    param.marks.append(  # type: ignore
+                    param.marks.append(  # type: ignore[attr-defined]
                         pytest.mark.skip(reason="Engine RPC is not supported")
                     )
                 parameter_set.append(param)
@@ -546,7 +546,7 @@ def pytest_collection_modifyitems(
     for i, item in enumerate(items):
         if isinstance(item, EIPSpecTestItem):
             continue
-        params: Dict[str, Any] = item.callspec.params  # type: ignore
+        params: Dict[str, Any] = item.callspec.params  # type: ignore[attr-defined]
         if "fork" not in params or params["fork"] is None:
             items_for_removal.append(i)
             continue

@@ -71,8 +71,8 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 
 @pytest.hookimpl(trylast=True)
 def pytest_configure(config: pytest.Config) -> None:  # noqa: D103
-    config.test_suite_scope = "session"  # type: ignore
-    config.engine_rpc_supported = True  # type: ignore
+    config.test_suite_scope = "session"  # type: ignore[attr-defined]
+    config.engine_rpc_supported = True  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
@@ -413,7 +413,7 @@ def client(
                     base_error_file.unlink()  # Success
                     with open(base_file, "w") as f:
                         json.dump(
-                            asdict(replace(client, config=None)),  # type: ignore
+                            asdict(replace(client, config=None)),  # type: ignore[arg-type]
                             f,
                         )
 
