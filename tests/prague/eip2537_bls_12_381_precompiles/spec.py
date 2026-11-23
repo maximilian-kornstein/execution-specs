@@ -275,7 +275,7 @@ def pairing_gas(input_length: int) -> int:
     return (Spec.PAIRING_PER_PAIR_GAS * k) + Spec.PAIRING_BASE_GAS
 
 
-GAS_CALCULATION_FUNCTION_MAP = {
+GAS_CALCULATION_FUNCTION_MAP: Dict[int, Callable[[int], int]] = {
     Spec.G1ADD: lambda _: Spec.G1ADD_GAS,
     Spec.G1MSM: msm_gas_func_gen(
         BLS12Group.G1, len(PointG1() + Scalar()), Spec.G1MUL_GAS
