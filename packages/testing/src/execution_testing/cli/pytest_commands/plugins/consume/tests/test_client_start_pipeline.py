@@ -54,11 +54,11 @@ class TestStartAhead:
         """
         manager = _manager({"next": 2})
         release = threading.Event()
-        stub = _StubClient()
+        stub = cast(Client, _StubClient())
 
         def start() -> Client:
             release.wait()
-            return cast(Client, stub)
+            return stub
 
         manager.start_ahead("next", start)
         threading.Timer(0.05, release.set).start()
@@ -322,8 +322,8 @@ class TestNextGroupItem:
 
     def test_the_first_item_of_the_next_group_is_returned(self) -> None:
         """Once another group is queued, its first item is returned."""
-        queued = [_GroupItem(g) for g in ("a", "a", "b", "b")]
-        assert next_group_item(cast(Any, queued), "a") is queued[2]
+        queued: List[Any] = [_GroupItem(g) for g in ("a", "a", "b", "b")]
+        assert next_group_item(queued, "a") is queued[2]
 
     def test_nothing_queued_returns_none(self) -> None:
         """A worker at the end of its queue has nothing to start."""

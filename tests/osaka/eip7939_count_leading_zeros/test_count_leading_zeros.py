@@ -2,6 +2,8 @@
 Tests [EIP-7939: Count leading zeros (CLZ)](https://eips.ethereum.org/EIPS/eip-7939).
 """
 
+from enum import Enum
+
 import pytest
 from execution_testing import (
     Account,
@@ -638,7 +640,7 @@ def test_clz_initcode_create(
     state_test(pre=pre, post=post, tx=tx)
 
 
-class CallingContext:
+class CallingContext(Enum):
     """Context for calling operations."""
 
     callee_context = 1  # CALL

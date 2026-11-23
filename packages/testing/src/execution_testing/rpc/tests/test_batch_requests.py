@@ -1,6 +1,6 @@
 """Test the batch request chunking of `BaseRPC` clients."""
 
-from typing import Any, Iterator
+from typing import Any, Iterator, List
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -72,6 +72,7 @@ def test_chunked_receipts_keep_request_order(
 ) -> None:
     """Chunked receipts are returned in the order of the input hashes."""
     hashes = [Hash(i) for i in range(1, 6)]
-    receipts = rpc.get_transaction_receipts(hashes)
+    # The echo mock stands in each request's hex id for its receipt.
+    receipts: List[Any] = rpc.get_transaction_receipts(hashes)
     assert post.call_count == 3
     assert receipts == [hex(i) for i in range(1, 6)]

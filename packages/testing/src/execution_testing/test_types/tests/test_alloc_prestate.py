@@ -27,6 +27,11 @@ from execution_testing.test_types import Account, Alloc
 from execution_testing.test_types.account_types import _Phase
 
 
+def _phase(alloc: Alloc) -> _Phase:
+    """Read the phase of `alloc` without mypy narrowing it across calls."""
+    return alloc._phase
+
+
 def _b20(hex_str: str) -> Bytes20:
     """Build a `Bytes20` address from a 40-char hex string (no `0x`)."""
     return Bytes20(bytes.fromhex(hex_str))
@@ -96,11 +101,11 @@ def _state_from_alloc(alloc: Alloc) -> spec_state_mpt.State:
 def test_cache_build_and_read_methods_agree_with_source() -> None:
     """PreState reads on the alloc agree with the source dict."""
     alloc = _fixture_alloc()
-    assert alloc._phase is _Phase.CONSTRUCTION
+    assert _phase(alloc) is _Phase.CONSTRUCTION
 
     # The first PreState call must transition the alloc to LIVE.
     acct_b = alloc.get_account_optional(ADDR_B)
-    assert alloc._phase is _Phase.LIVE
+    assert _phase(alloc) is _Phase.LIVE
     assert acct_b is not None
     assert acct_b.nonce == Uint(3)
     assert acct_b.balance == U256(7)
