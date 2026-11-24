@@ -22,7 +22,7 @@ class QuestionaryInputRepository(InputRepository):
         """Ask a password input question (hidden)."""
         return password(message=question).ask()
 
-    def input_select(self, question: str, choices: list) -> str:
+    def input_select(self, question: str, choices: list) -> str | None:
         """Ask a single-choice selection question."""
         return select(message=question, choices=choices).ask()
 

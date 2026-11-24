@@ -3374,7 +3374,7 @@ def deposit_contract_initial_storage() -> Storage:
 def test_set_code_to_system_contract(
     blockchain_test: BlockchainTestFiller,
     pre: Alloc,
-    system_contract: int,
+    system_contract: Address,
     call_opcode: Op,
 ) -> None:
     """Test setting the code of an account to a system contract."""
@@ -3400,8 +3400,10 @@ def test_set_code_to_system_contract(
                 storage=deposit_contract_initial_storage(),
             )
         case Address(0x000F3DF6D732807EF1319FB7B8BB8522D0BEAC02):  # EIP-4788
+            # `Storage` validates the `int` slot and value into `HashInt`s.
             auth_signer = pre.fund_eoa(
-                auth_account_start_balance, storage=Storage({1: 1})
+                auth_account_start_balance,
+                storage=Storage({1: 1}),  # type: ignore[dict-item]
             )
         case _:
             # Pre-fund without storage

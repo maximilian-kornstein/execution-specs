@@ -273,7 +273,7 @@ class FunctionPageProps(PagePropsBase):
         # Standalone HTML pages temporarily disabled - they don't
         # inherit the Material theme (see issue #1491).
         return
-        if not self.cases:
+        if not self.cases:  # type: ignore[unreachable]
             return
         html_template = jinja2_env.get_template("function.html.j2")
         rendered_html_content = html_template.render(**asdict(self))

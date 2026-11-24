@@ -85,7 +85,6 @@ class ModExpInput(TestParameterGroup):
         """
         if isinstance(input_data, str):
             input_data = Bytes(input_data)
-        assert not isinstance(input_data, str)
         padded_input_data = input_data
         if len(padded_input_data) < 96:
             padded_input_data = Bytes(padded_input_data.ljust(96, b"\0"))

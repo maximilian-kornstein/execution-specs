@@ -157,9 +157,7 @@ class _UnixSocketHttpServer(_UnixStreamServerBase):
             time.sleep(11.0)
             now = time.monotonic()
             last_response = self.last_response
-            if last_response is None:
-                self.last_response = now
-            elif now - last_response > float(self.shutdown_timeout):
+            if now - last_response > float(self.shutdown_timeout):
                 self.shutdown()
                 break
 

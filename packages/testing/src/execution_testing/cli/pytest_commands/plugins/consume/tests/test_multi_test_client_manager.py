@@ -179,7 +179,8 @@ class TestGroupClient:
         hive = _Hive()
         manager, _ = _manager({GROUP: 2, VARIANT_GROUP: 2})
         first = self._run(hive, manager, GROUP, "test-a")
-        assert not first.stopped
+        stopped_after_first_test = first.stopped
+        assert not stopped_after_first_test
         second = self._run(hive, manager, GROUP, "test-b")
         assert second is first
         assert hive.booted == [first]

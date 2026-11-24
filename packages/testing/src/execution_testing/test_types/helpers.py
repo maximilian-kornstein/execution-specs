@@ -134,16 +134,7 @@ def add_kzg_version(
 
     for b_hash in b_hashes:
         b_hash = bytes(Hash(b_hash))
-        if isinstance(b_hash, int) or isinstance(b_hash, str):
-            kzg_versioned_hashes.append(Hash(kzg_version_hex + b_hash[1:]))
-        elif isinstance(b_hash, bytes) or isinstance(b_hash, SupportsBytes):
-            if isinstance(b_hash, SupportsBytes):
-                b_hash = bytes(b_hash)
-            kzg_versioned_hashes.append(Hash(kzg_version_hex + b_hash[1:]))
-        else:
-            raise TypeError(
-                "Blob hash must be either an integer, string or bytes"
-            )
+        kzg_versioned_hashes.append(Hash(kzg_version_hex + b_hash[1:]))
     return kzg_versioned_hashes
 
 

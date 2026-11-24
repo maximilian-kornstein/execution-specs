@@ -480,6 +480,7 @@ strict_equality = true
 warn_unused_ignores = true
 warn_unused_configs = true
 warn_redundant_casts = true
+warn_unreachable = true
 ignore_missing_imports = false
 mypy_path = ["src", "packages/testing/src", "packages/testing/stubs"]
 files = ["src", "tests", "packages"]

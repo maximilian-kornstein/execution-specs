@@ -21,7 +21,7 @@ class InputRepository(ABC):
         pass
 
     @abstractmethod
-    def input_select(self, question: str, choices: List[str]) -> str:
+    def input_select(self, question: str, choices: List[str]) -> str | None:
         """Ask a single-choice selection question."""
         pass
 

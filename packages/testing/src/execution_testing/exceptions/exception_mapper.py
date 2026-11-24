@@ -101,7 +101,7 @@ class ExceptionWithMessage(BaseModel, Generic[ExceptionBoundTypeVar]):
 
 
 def mapper_validator(
-    v: str, info: ValidationInfo
+    v: str | None, info: ValidationInfo
 ) -> Dict[str, Any] | UndefinedException | None:
     """
     Use the exception mapper that must be included in the context to map the

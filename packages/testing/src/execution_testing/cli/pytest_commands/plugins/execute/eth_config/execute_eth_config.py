@@ -144,20 +144,15 @@ def test_eth_config_next_fork_id(
             "Client did not return a valid `next` fork config."
         )
         expected_next_fork_id = expected_next.fork_id
-        if expected_next_fork_id is None:
-            assert eth_config_response.next.fork_id is None, (
-                "Client returned a `next.forkId` but expected None."
-            )
-        else:
-            received_fork_id = eth_config_response.next.fork_id
-            assert received_fork_id is not None, (
-                "Client did not return a valid `next.forkId`."
-            )
-            assert received_fork_id == expected_next_fork_id, (
-                "Client's `next.forkId` does not match expected value: "
-                f"{received_fork_id} != "
-                f"{expected_next_fork_id}"
-            )
+        received_fork_id = eth_config_response.next.fork_id
+        assert received_fork_id is not None, (
+            "Client did not return a valid `next.forkId`."
+        )
+        assert received_fork_id == expected_next_fork_id, (
+            "Client's `next.forkId` does not match expected value: "
+            f"{received_fork_id} != "
+            f"{expected_next_fork_id}"
+        )
 
 
 def test_eth_config_last(
@@ -202,20 +197,15 @@ def test_eth_config_last_fork_id(
             "Client did not return a valid `last` fork config."
         )
         expected_last_fork_id = expected_last.fork_id
-        if expected_last_fork_id is None:
-            assert eth_config_response.last.fork_id is None, (
-                "Client returned a `last.forkId` but expected None."
-            )
-        else:
-            received_fork_id = eth_config_response.last.fork_id
-            assert received_fork_id is not None, (
-                "Client did not return a valid `last.forkId`."
-            )
-            assert received_fork_id == expected_last_fork_id, (
-                "Client's `last.forkId` does not match expected value: "
-                f"{received_fork_id} != "
-                f"{expected_last_fork_id}"
-            )
+        received_fork_id = eth_config_response.last.fork_id
+        assert received_fork_id is not None, (
+            "Client did not return a valid `last.forkId`."
+        )
+        assert received_fork_id == expected_last_fork_id, (
+            "Client's `last.forkId` does not match expected value: "
+            f"{received_fork_id} != "
+            f"{expected_last_fork_id}"
+        )
 
 
 def test_eth_config_majority(

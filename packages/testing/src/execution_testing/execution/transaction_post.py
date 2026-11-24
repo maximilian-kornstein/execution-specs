@@ -17,7 +17,6 @@ from execution_testing.test_types import (
     Account,
     Alloc,
     Environment,
-    NetworkWrappedTransaction,
     PostStateContext,
     TestPhase,
     Transaction,
@@ -273,11 +272,10 @@ class TransactionPost(BaseExecute):
 
         for block in self.blocks:
             for tx in block:
-                if not isinstance(tx, NetworkWrappedTransaction):
-                    assert tx.ty != 3, (
-                        "Unwrapped transaction type 3 is not supported in "
-                        "execute mode."
-                    )
+                assert tx.ty != 3, (
+                    "Unwrapped transaction type 3 is not supported in "
+                    "execute mode."
+                )
 
         pre_state = self.snapshot_pre_state(eth_rpc)
 
@@ -344,11 +342,7 @@ class TransactionPost(BaseExecute):
             all_tx_hashes.extend(current_block_tx_hashes)
             last_block_tx_hashes = current_block_tx_hashes
             landed_tx_groups.append(
-                [
-                    tx.tx if isinstance(tx, NetworkWrappedTransaction) else tx
-                    for tx in signed_txs
-                    if tx.error is None
-                ]
+                [tx for tx in signed_txs if tx.error is None]
             )
 
         self.verify_receipts(eth_rpc, landed_tx_groups)

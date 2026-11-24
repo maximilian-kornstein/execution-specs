@@ -66,10 +66,7 @@ class BlockchainTestProvider(BaseModel):
             else:
                 state_str += f"{pad}nonce={str(account_obj.nonce)},\n"
 
-            if account_obj.code is None:
-                state_str += f'{pad}code="0x",\n'
-            else:
-                state_str += f'{pad}code="{str(account_obj.code)}",\n'
+            state_str += f'{pad}code="{str(account_obj.code)}",\n'
             state_str += pad + "storage={\n"
 
             if account_obj.storage is not None:

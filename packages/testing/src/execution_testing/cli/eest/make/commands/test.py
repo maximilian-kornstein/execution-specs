@@ -10,6 +10,7 @@ template using Jinja2.
 import os
 import sys
 from pathlib import Path
+from typing import NoReturn
 
 import click
 import jinja2
@@ -28,7 +29,7 @@ template_env = jinja2.Environment(
 )
 
 
-def exit_now() -> None:
+def exit_now() -> NoReturn:
     """Interrupt execution instantly via ctrl+C."""
     print("Ctrl+C detected, exiting..")
     exit(0)

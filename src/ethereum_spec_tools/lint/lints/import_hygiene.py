@@ -78,9 +78,6 @@ class ImportHygiene(Lint):
         current_imports = self._parse(source, _Visitor()).item_imports
 
         for level, item in current_imports:
-            if item is None:
-                continue
-
             if level > current_depth:
                 dots = "." * level
                 diagnostic = Diagnostic(

@@ -34,7 +34,7 @@ def input_password(question: str) -> str:
     return input_repository.input_password(question)
 
 
-def input_select(question: str, choices: list) -> str:
+def input_select(question: str, choices: list) -> str | None:
     """
     Ask a single-choice question from a list of options.
 
@@ -43,7 +43,7 @@ def input_select(question: str, choices: list) -> str:
         choices (list): A list of options for the user to choose from.
 
     Returns:
-        str: The selected choice.
+        str | None: The selected choice, or `None` if the user cancels.
 
     """
     return input_repository.input_select(question, choices)

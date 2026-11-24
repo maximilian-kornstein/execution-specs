@@ -41,8 +41,6 @@ def get_fixture_hashes(index: IndexFile) -> Set[Hash]:
     hash_set = set()
 
     for test_case in index.test_cases:
-        if test_case.fixture_hash is None:
-            continue
         hash_set.add(test_case.fixture_hash)
 
     return hash_set

@@ -154,7 +154,8 @@ def test_expression_arithmetic() -> None:
     assert isinstance(expression, BalanceExpression)
     assert expression.resolve(context) == -1000 - 50 - 2 * 60
 
-    tips = sum(Tip(tx, gas=1) for tx in (tx_a, tx_b))
+    # Typeshed's `sum` assumes adding two `Tip`s gives a `Tip`.
+    tips: object = sum(Tip(tx, gas=1) for tx in (tx_a, tx_b))
     assert isinstance(tips, BalanceExpression)
     assert tips.resolve(context) == (10 - BASE_FEE) + (20 - BASE_FEE)
 

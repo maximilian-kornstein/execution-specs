@@ -35,8 +35,6 @@ class EESTLogger(logging.Logger):
         This level is between DEBUG (10) and INFO (20), intended for messages
         more detailed than INFO but less verbose than DEBUG.
         """
-        if stacklevel is None:
-            stacklevel = 1
         if self.isEnabledFor(VERBOSE_LEVEL):
             self._log(
                 VERBOSE_LEVEL,
@@ -63,8 +61,6 @@ class EESTLogger(logging.Logger):
         This level is between WARNING (30) and ERROR (40), intended for test
         failures and similar issues.
         """
-        if stacklevel is None:
-            stacklevel = 1
         if self.isEnabledFor(FAIL_LEVEL):
             self._log(
                 FAIL_LEVEL, msg, args, exc_info, extra, stack_info, stacklevel

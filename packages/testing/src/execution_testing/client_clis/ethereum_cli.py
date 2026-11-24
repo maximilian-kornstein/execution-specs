@@ -117,20 +117,19 @@ class EthereumCLI:
 
             # it might be that the provided binary exists in path
             filename = os.path.basename(resolved_path)
-            binary = shutil.which(filename)  # type: ignore
-            logger.debug(f"Output of 'which {binary_path}': {binary}")
+            found = shutil.which(filename)
+            logger.debug(f"Output of 'which {binary_path}': {found}")
 
-            if binary is None:
+            if found is None:
                 logger.error(
                     f"Resolved t8n binary path does not exist: {resolved_path}"
                 )
                 raise CLINotFoundInPathError(binary=resolved_path)
 
-            assert binary is not None
             logger.debug(
-                f"Successfully located the path of the t8n binary: {binary}"
+                f"Successfully located the path of the t8n binary: {found}"
             )
-            binary = Path(binary)
+            binary = Path(found)
 
         # Group the tools by version flag, so we only have to call the tool
         # once for all the classes that share the same version flag

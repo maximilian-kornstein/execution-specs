@@ -264,8 +264,6 @@ def transition_fork_from_to(
     Return transition fork that transitions to and from the specified forks.
     """
     for transition_fork in get_transition_forks():
-        if not issubclass(transition_fork, TransitionBaseClass):
-            continue
         if (
             transition_fork.transitions_to() == fork_to
             and transition_fork.transitions_from() == fork_from
@@ -283,8 +281,6 @@ def transition_fork_to(
     if issubclass(fork_to, TransitionBaseClass):
         return selected_forks
     for transition_fork in get_transition_forks():
-        if not issubclass(transition_fork, TransitionBaseClass):
-            continue
         if transition_fork.transitions_to() == fork_to:
             selected_forks.add(transition_fork)
 

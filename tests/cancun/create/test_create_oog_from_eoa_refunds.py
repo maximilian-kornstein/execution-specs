@@ -178,8 +178,6 @@ def build_init_code(
             )
             + Op.POP(Op.CREATE2(0, 0, Op.EXTCODESIZE(helpers.init_code), 0))
         )
-    else:
-        refund_code = Op.STOP
 
     # Build the ending based on OOG scenario
     if oog_scenario == OogScenario.NO_OOG:
@@ -208,9 +206,6 @@ def build_init_code(
     elif oog_scenario == OogScenario.OOG_INVALID:
         # INVALID opcode causes OOG (all gas consumed, no refund)
         ending = Op.INVALID
-
-    else:
-        ending = Op.STOP
 
     return bytes(prefix + refund_code + ending)
 

@@ -248,8 +248,9 @@ class CovariantDescriptor:
         if self.selector is None or self.selector(
             *parameters_values[: self.selector.__code__.co_argcount]
         ):
+            # Marker kwargs are untyped, so `marks` can also be a function.
             if isinstance(marks, FunctionType):
-                marks = marks(*parameters_values[: marks.__code__.co_argcount])
+                marks = marks(*parameters_values[: marks.__code__.co_argcount])  # type: ignore[unreachable]
             assert not isinstance(marks, FunctionType), (
                 "marks must be a list or None"
             )
@@ -330,8 +331,6 @@ class CovariantDecorator(CovariantDescriptor):
         self.metafunc = metafunc
 
         m = metafunc.definition.iter_markers(self.marker_name)
-        if m is None:
-            return
         marker_list = list(m)
         assert len(marker_list) <= 1, (
             f"Multiple markers {self.marker_name} found"

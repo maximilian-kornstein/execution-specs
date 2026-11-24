@@ -16,14 +16,12 @@ directory.
 
 import json
 from pathlib import Path
-from typing import Any, Dict, List, cast
+from typing import Any, List, cast
 
 import click
 
 
-def recursive_sort(
-    item: Dict[str, Any] | List[Any],
-) -> Dict[str, Any] | List[Any]:
+def recursive_sort(item: Any) -> Any:
     """
     Recursively sorts an item.
 

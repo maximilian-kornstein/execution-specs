@@ -136,9 +136,7 @@ def _match_index(idx: int | list, val: int) -> bool:
     """Check if an index specification matches a value."""
     if isinstance(idx, int):
         return idx == -1 or idx == val
-    if isinstance(idx, list):
-        return val in idx
-    return False
+    return val in idx
 
 
 def resolve_expect_post(

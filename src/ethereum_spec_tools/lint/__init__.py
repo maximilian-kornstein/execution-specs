@@ -16,7 +16,7 @@ from typing import Generator, List, Optional, Sequence, Tuple, TypeVar
 from ..forks import Hardfork
 
 
-def compare_ast(old: ast.AST, new: ast.AST) -> bool:
+def compare_ast(old: object, new: object) -> bool:
     """
     Checks if two nodes are equal.
     """
