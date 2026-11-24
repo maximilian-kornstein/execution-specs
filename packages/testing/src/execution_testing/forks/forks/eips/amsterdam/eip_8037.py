@@ -347,7 +347,7 @@ class EIP8037(BaseFork):
         cost moves to state gas, returned by `_calculate_return_state_gas`.
         """
         metadata = opcode.metadata
-        code_deposit_size = metadata["code_deposit_size"]
+        code_deposit_size: int = metadata["code_deposit_size"]
         if code_deposit_size > 0:
             code_words = (code_deposit_size + 31) // 32
             hash_gas = gas_costs.OPCODE_KECCAK256_PER_WORD * code_words
@@ -366,7 +366,7 @@ class EIP8037(BaseFork):
         """
         del gas_costs
         metadata = opcode.metadata
-        code_deposit_size = metadata["code_deposit_size"]
+        code_deposit_size: int = metadata["code_deposit_size"]
         if code_deposit_size > 0:
             return code_deposit_size * cls.cost_per_state_byte()
         return 0

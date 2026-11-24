@@ -5,7 +5,7 @@ import json
 from dataclasses import asdict, replace
 from pathlib import Path
 from random import randint
-from typing import Generator, Mapping, Tuple, cast
+from typing import Any, Dict, Generator, Mapping, Tuple, cast
 
 import pytest
 from filelock import FileLock
@@ -200,7 +200,7 @@ def build_client_genesis_dict(
     that hive writes to ``/genesis.json``.
     """
     # NOTE: to_json() excludes None values.
-    genesis = to_json(genesis_header)
+    genesis: Dict[Any, Any] = to_json(genesis_header)
     alloc = to_json(pre_alloc)
     # NOTE: nethermind requires account keys without '0x' prefix.
     genesis["alloc"] = {k.replace("0x", ""): v for k, v in alloc.items()}

@@ -3,7 +3,7 @@
 import re
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import ClassVar, Dict, List, Self
+from typing import ClassVar, Dict, List, Self, cast
 
 import pytest
 from pydantic import BaseModel, Field, RootModel
@@ -141,7 +141,7 @@ class BenchmarkParametrizer(ABC):
         Return `None` if the parameter is not specified.
         """
         if hasattr(config, cls.config_field):
-            return getattr(config, cls.config_field)
+            return cast(Self | None, getattr(config, cls.config_field))
 
         parameter_value = config.getoption(cls.parameter_name)
         setattr(config, cls.config_field, None)
@@ -154,7 +154,7 @@ class BenchmarkParametrizer(ABC):
                 cls.config_field,
                 cls.from_parameter_value(config, parameter_value),
             )
-        return getattr(config, cls.config_field)
+        return cast(Self | None, getattr(config, cls.config_field))
 
     @abstractmethod
     def get_test_parameters(self, test_name: str) -> list[ParameterSet]:
@@ -524,7 +524,7 @@ def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:
 def gas_benchmark_value(request: pytest.FixtureRequest) -> int:
     """Return a single gas benchmark value for the current test."""
     if hasattr(request, "param"):
-        return request.param
+        return cast(int, request.param)
 
     # Only use high gas limit if --fixed-opcode-count flag was provided
     fixed_opcode_count = request.config.getoption("fixed_opcode_count")
@@ -538,7 +538,7 @@ def gas_benchmark_value(request: pytest.FixtureRequest) -> int:
 def fixed_opcode_count(request: pytest.FixtureRequest) -> int | None:
     """Return a fixed opcode count for the current test, or None if not set."""
     if hasattr(request, "param"):
-        return request.param
+        return cast(int | None, request.param)
 
     return None
 

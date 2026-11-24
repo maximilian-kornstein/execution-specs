@@ -8,7 +8,7 @@ import io
 import json
 import logging
 import time
-from typing import Dict, Generator, Mapping, cast
+from typing import Any, Dict, Generator, Mapping, cast
 
 import pytest
 from hive.client import Client, ClientType
@@ -134,7 +134,7 @@ def sync_genesis(fixture: BlockchainEngineSyncFixture) -> Dict:
     Convert the fixture genesis block header and pre-state to a sync client
     genesis state.
     """
-    genesis = to_json(fixture.genesis)
+    genesis: Dict[Any, Any] = to_json(fixture.genesis)
     alloc = to_json(fixture.pre)
     # NOTE: nethermind requires account keys without '0x' prefix
     genesis["alloc"] = {k.replace("0x", ""): v for k, v in alloc.items()}

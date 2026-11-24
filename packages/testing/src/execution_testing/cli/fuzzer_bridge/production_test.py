@@ -17,7 +17,7 @@ import sys
 import tempfile
 import time
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 from execution_testing.base_types import Address
 from execution_testing.client_clis import GethTransitionTool
@@ -361,7 +361,7 @@ class FuzzerBridge:
         print(f"   Tests passed: {self.stats['tests_passed']}")
         print(f"   Tests failed: {self.stats['tests_failed']}")
 
-        return result["pass"]
+        return cast(bool, result["pass"])
 
 
 def main() -> int:

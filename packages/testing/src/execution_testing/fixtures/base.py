@@ -14,6 +14,7 @@ from typing import (
     Set,
     Type,
     Union,
+    cast,
 )
 
 import pytest
@@ -47,7 +48,7 @@ def fixture_format_discriminator(v: Any) -> str | None:
             "Fixture does not have an info field, "
             f"cannot determine fixture format: {v}"
         )
-    fixture_format = info_dict.get("fixture-format")
+    fixture_format: str | None = info_dict.get("fixture-format")
     if not fixture_format:
         fixture_format = info_dict.get("fixture_format")
     if fixture_format is None:
@@ -134,8 +135,11 @@ class BaseFixture(CamelModel):
     ) -> "BaseFixture":
         """Parse the fixture into the correct subclass."""
         if cls is BaseFixture:
-            return BaseFixture.formats_type_adapter.validate_python(v)
-        return handler(v)
+            return cast(
+                BaseFixture,
+                BaseFixture.formats_type_adapter.validate_python(v),
+            )
+        return cast(BaseFixture, handler(v))
 
     @cached_property
     def json_dict(self) -> Dict[str, Any]:

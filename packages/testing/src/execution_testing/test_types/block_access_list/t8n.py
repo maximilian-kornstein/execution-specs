@@ -1,7 +1,7 @@
 """Block Access List (BAL) for t8n tool communication and fixtures."""
 
 from functools import cached_property
-from typing import Any, Callable, List, Self, Sequence, Union
+from typing import Any, Callable, List, Self, Sequence, Union, cast
 
 import ethereum_rlp as eth_rlp
 from ethereum_rlp import Simple
@@ -158,7 +158,7 @@ class BlockAccessList(EthereumTestRootModel[List[BalAccountChange]]):
 
     def to_list(self) -> List[Any]:
         """Return the list for RLP encoding per EIP-7928."""
-        return to_serializable_element(self.root)
+        return cast(List[Any], to_serializable_element(self.root))
 
     @validate_call
     def with_rlp_override(self, rlp: Bytes) -> Self:

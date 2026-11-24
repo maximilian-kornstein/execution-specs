@@ -6,7 +6,7 @@ import logging
 import time
 from concurrent.futures import Future, ThreadPoolExecutor
 from functools import partial
-from typing import TYPE_CHECKING, Any, Callable, Generator, cast
+from typing import TYPE_CHECKING, Any, Callable, Dict, Generator, cast
 
 import pytest
 from _pytest.reports import TestReport
@@ -371,7 +371,7 @@ def build_client_genesis(
         return client_genesis_cache[pre_hash]
 
     start = time.perf_counter()
-    genesis = to_json(pre_alloc_group.genesis)
+    genesis: Dict[Any, Any] = to_json(pre_alloc_group.genesis)
     alloc = to_json(pre_alloc_group.pre)
     # NOTE: nethermind requires account keys without '0x' prefix
     genesis["alloc"] = {k.replace("0x", ""): v for k, v in alloc.items()}

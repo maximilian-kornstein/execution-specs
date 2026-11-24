@@ -1,5 +1,7 @@
 """Numeric and stack-manipulation helpers for benchmark bytecode."""
 
+from typing import cast
+
 from execution_testing import Op
 
 DEFAULT_BINOP_ARGS = (
@@ -20,7 +22,7 @@ def make_dup(index: int) -> Op:
     element from the top of the stack. E.g. make_dup(0) → DUP1.
     """
     assert 0 <= index < 16, f"DUP index {index} out of range [0, 15]"
-    return getattr(Op, f"DUP{index + 1}")
+    return cast(Op, getattr(Op, f"DUP{index + 1}"))
 
 
 def to_signed(x: int) -> int:

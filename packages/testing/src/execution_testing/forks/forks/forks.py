@@ -328,7 +328,7 @@ class Frontier(BaseFork):
                 base_cost = base_gas
 
             # Add copy cost based on data size
-            data_size = opcode.metadata["data_size"]
+            data_size: int = opcode.metadata["data_size"]
             word_count = (data_size + 31) // 32
             copy_cost = gas_costs.OPCODE_COPY_PER_WORD * word_count
 
@@ -745,7 +745,7 @@ class Frontier(BaseFork):
         metadata = opcode.metadata
 
         # Code deposit cost when returning from initcode
-        code_deposit_size = metadata["code_deposit_size"]
+        code_deposit_size: int = metadata["code_deposit_size"]
         return gas_costs.CODE_DEPOSIT_PER_BYTE * code_deposit_size
 
     @classmethod

@@ -72,7 +72,7 @@ class RPCRequest:
         assert transaction.sender is not None
         assert transaction.to is not None
 
-        result = self.debug_rpc.trace_call(
+        result: Dict[str, Dict[Any, Any]] | None = self.debug_rpc.trace_call(
             {
                 "from": transaction.sender.hex(),
                 "to": transaction.to.hex(),

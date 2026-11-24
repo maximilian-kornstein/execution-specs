@@ -4,7 +4,7 @@ relevant transaction.
 """
 
 from dataclasses import fields
-from typing import Any, List
+from typing import Any, List, cast
 
 from ethereum_rlp import rlp
 from ethereum_types.bytes import Bytes, Bytes0, Bytes32
@@ -62,7 +62,7 @@ class TransactionLoad:
         """Get to address for the transaction."""
         if self.raw.get("to") == "":
             return Bytes0(b"")
-        return self.fork.hex_to_address(self.raw.get("to"))
+        return cast(Bytes, self.fork.hex_to_address(self.raw.get("to")))
 
     def json_to_value(self) -> U256:
         """Get the value of the transaction."""

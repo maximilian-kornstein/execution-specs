@@ -3,7 +3,7 @@
 import json
 from os.path import realpath
 from pathlib import Path
-from typing import Any, List, Mapping
+from typing import Any, List, Mapping, cast
 
 import pytest
 from click.testing import CliRunner
@@ -225,7 +225,7 @@ class TestFillBlockchainValidTxs:
 
     @pytest.fixture
     def fork(self, request: Any) -> Fork:  # noqa: D102
-        return request.param
+        return cast(Fork, request.param)
 
     @pytest.fixture
     def check_hive(self, fork: Fork) -> bool:  # noqa: D102

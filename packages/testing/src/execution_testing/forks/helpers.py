@@ -10,6 +10,7 @@ from typing import (
     Optional,
     Set,
     Type,
+    cast,
 )
 
 from pydantic import (
@@ -442,7 +443,7 @@ class ForkRangeDescriptor(BaseModel):
                     "Unable to completely parse fork range descriptor. "
                     + f'Remaining string: "{descriptor_string}"'
                 )
-        return handler(v)
+        return cast("ForkRangeDescriptor", handler(v))
 
 
 def fork_validator_generator(
@@ -495,7 +496,7 @@ ForkSet = Annotated[
     Set[Fork],
     BeforeValidator(set_before_validator),
 ]
-ForkSetAdapter: TypeAdapter = TypeAdapter(ForkSet)
+ForkSetAdapter: TypeAdapter[Set[Fork]] = TypeAdapter(ForkSet)
 
 ForkEIP = Annotated[
     Type[BaseFork],

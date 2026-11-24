@@ -88,7 +88,8 @@ class PytestParameterEnum(Enum):
     @property
     def description(self) -> str:
         """Returns the description of this test case."""
-        return self._value_["description"]
+        description: str = self._value_["description"]
+        return description
 
     @classmethod
     def parametrize(cls) -> Any:

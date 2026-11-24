@@ -108,7 +108,7 @@ def get_optimized_state_patches(fork: Hardfork) -> Dict[str, Any]:
             """
             if not isinstance(other, State):
                 return NotImplemented
-            return state_root(self) == state_root(other)
+            return cast(bool, state_root(self) == state_root(other))
 
         def __enter__(self) -> "State":
             """Support with statements."""
@@ -149,12 +149,12 @@ def get_optimized_state_patches(fork: Hardfork) -> Dict[str, Any]:
     @add_item(patches)
     def get_metadata(state: State, key: Bytes) -> Optional[Bytes]:
         """Get a piece of metadata."""
-        return state.db.get_metadata(key)
+        return cast(Optional[Bytes], state.db.get_metadata(key))
 
     @add_item(patches)
     def set_metadata(state: State, key: Bytes, value: Bytes) -> None:
         """Set a piece of metadata."""
-        return state.db.set_metadata(key, value)
+        state.db.set_metadata(key, value)
 
     @add_item(patches)
     def begin_db_transaction(state: State) -> None:
@@ -187,7 +187,7 @@ def get_optimized_state_patches(fork: Hardfork) -> Dict[str, Any]:
         if state.tx_restore_points:
             raise Exception("In a non-db transaction")
         flush(state)
-        return state.db.state_root()
+        return cast(Bytes32, state.db.state_root())
 
     @add_item(patches)
     def storage_root(state: State, address: Address) -> Root:
@@ -197,7 +197,7 @@ def get_optimized_state_patches(fork: Hardfork) -> Dict[str, Any]:
         if state.tx_restore_points:
             raise Exception("In a non-db transaction")
         flush(state)
-        return state.db.storage_root(address)
+        return cast(Bytes32, state.db.storage_root(address))
 
     @add_item(patches)
     def flush(state: State) -> None:

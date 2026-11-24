@@ -20,7 +20,7 @@ import textwrap
 import time
 from dataclasses import asdict, dataclass
 from pathlib import Path
-from typing import Dict, Generator, List, cast
+from typing import Any, Dict, Generator, List, cast
 
 import pytest
 import requests
@@ -148,7 +148,7 @@ def _build_client_genesis(seed_keys: List[EOA]) -> dict:
         else None,
     )
 
-    client_genesis = to_json(genesis_header)
+    client_genesis: Dict[Any, Any] = to_json(genesis_header)
     alloc = to_json(genesis_alloc)
     client_genesis["alloc"] = {
         k.replace("0x", ""): v for k, v in alloc.items()

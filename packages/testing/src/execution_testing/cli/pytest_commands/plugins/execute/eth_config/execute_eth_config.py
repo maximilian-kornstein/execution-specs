@@ -5,7 +5,7 @@ Pytest test to verify a client's configuration using `eth_config` RPC endpoint.
 import json
 import time
 from hashlib import sha256
-from typing import Dict, List
+from typing import Dict, List, cast
 
 import pytest
 
@@ -38,7 +38,7 @@ def eth_config_response(eth_rpc: List[EthRPC]) -> EthConfigResponse | None:
 @pytest.fixture(scope="function")
 def network(request: pytest.FixtureRequest) -> NetworkConfig:
     """Get the network that will be used to verify all tests."""
-    return request.config.network  # type: ignore[attr-defined]
+    return cast(NetworkConfig, request.config.network)  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="function")

@@ -2,7 +2,7 @@
 
 from pathlib import Path
 from tempfile import TemporaryDirectory
-from typing import Any, Generator, Literal
+from typing import Any, Generator, Literal, cast
 
 import pytest
 
@@ -48,7 +48,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 @pytest.fixture(scope="session")
 def destination(request: pytest.FixtureRequest) -> Address:
     """Get the destination address."""
-    return request.config.option.destination
+    return cast(Address, request.config.option.destination)
 
 
 def pytest_generate_tests(metafunc: pytest.Metafunc) -> None:

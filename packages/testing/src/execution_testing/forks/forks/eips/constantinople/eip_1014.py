@@ -24,7 +24,7 @@ class EIP1014(BaseFork):
         """Calculate CREATE2 gas cost based on metadata."""
         metadata = opcode.metadata
 
-        init_code_size = metadata["init_code_size"]
+        init_code_size: int = metadata["init_code_size"]
         init_code_words = (init_code_size + 31) // 32
         hash_gas = gas_costs.OPCODE_KECCAK256_PER_WORD * init_code_words
 

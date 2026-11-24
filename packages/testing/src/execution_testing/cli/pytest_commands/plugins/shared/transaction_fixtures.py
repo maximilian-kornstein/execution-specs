@@ -4,6 +4,8 @@ Pytest plugin providing default transaction fixtures for each transaction type.
 Each fixture can be overridden in test files to customize transaction behavior.
 """
 
+from typing import cast
+
 import pytest
 
 from execution_testing.base_types import AccessList
@@ -154,7 +156,7 @@ def typed_transaction(
     # Check if fixture exists - try to get it first
     try:
         # This will find fixtures defined in the test file or plugin
-        return request.getfixturevalue(fixture_name)
+        return cast(Transaction, request.getfixturevalue(fixture_name))
     except pytest.FixtureLookupError as e:
         # Get all supported tx types for better error message
         supported_types = fork.tx_types()

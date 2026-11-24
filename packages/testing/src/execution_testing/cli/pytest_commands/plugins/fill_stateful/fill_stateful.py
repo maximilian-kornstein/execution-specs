@@ -16,7 +16,7 @@ setup-phase block prepended to ``self.blocks``.
 import os
 import secrets
 from pathlib import Path
-from typing import Any, Generator, List
+from typing import Any, Generator, List, cast
 from urllib.parse import urlparse, urlunparse
 
 import pytest
@@ -490,7 +490,7 @@ def max_gas_limit_per_test(
     to ``Fork.transaction_gas_limit_cap()`` (EIP-7825) when the CLI flag
     is unset. Returns ``None`` on pre-Osaka forks (no cap).
     """
-    cli_value = request.config.getoption("max_gas_per_test")
+    cli_value: int | None = request.config.getoption("max_gas_per_test")
     if cli_value is not None:
         return cli_value
     fork_at_genesis = session_fork.fork_at(block_number=0, timestamp=0)
@@ -517,13 +517,13 @@ def debug_rpc(eth_rpc: EthRPC) -> DebugRPC:
 @pytest.fixture(scope="session")
 def extract_opcode_count(request: pytest.FixtureRequest) -> bool:
     """Whether --extract-opcode-count block tracing is enabled."""
-    return request.config.getoption("extract_opcode_count")
+    return cast(bool, request.config.getoption("extract_opcode_count"))
 
 
 @pytest.fixture(scope="session")
 def opcode_count_trace_timeout(request: pytest.FixtureRequest) -> str:
     """The --opcode-count-trace-timeout bound sent with each trace."""
-    return request.config.getoption("opcode_count_trace_timeout")
+    return cast(str, request.config.getoption("opcode_count_trace_timeout"))
 
 
 @pytest.fixture(scope="session")

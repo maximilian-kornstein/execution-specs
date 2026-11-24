@@ -16,6 +16,7 @@ mutating ``TransactionDefaults`` globally.
 """
 
 import os
+from typing import cast
 
 import pytest
 
@@ -178,9 +179,10 @@ def transactions_per_block(
     request: pytest.FixtureRequest,
 ) -> int:
     """Number of transactions per block (defaults to worker count)."""
-    if transactions_per_block := request.config.getoption(
+    transactions_per_block: int | None = request.config.getoption(
         "transactions_per_block"
-    ):
+    )
+    if transactions_per_block:
         return transactions_per_block
     worker_count_env = os.environ.get("PYTEST_XDIST_WORKER_COUNT")
     if not worker_count_env:
@@ -191,7 +193,7 @@ def transactions_per_block(
 @pytest.fixture(scope="session")
 def default_gas_price(request: pytest.FixtureRequest) -> int | None:
     """Return default gas price (from ``--default-gas-price``)."""
-    gas_price = request.config.getoption("default_gas_price")
+    gas_price: int | None = request.config.getoption("default_gas_price")
     if gas_price is not None:
         assert gas_price > 0, "Gas price must be greater than 0"
         logger.debug(
@@ -203,13 +205,13 @@ def default_gas_price(request: pytest.FixtureRequest) -> int | None:
 @pytest.fixture(scope="session")
 def dry_run(request: pytest.FixtureRequest) -> bool:
     """Return True if the test is a dry run."""
-    return request.config.getoption("dry_run")
+    return cast(bool, request.config.getoption("dry_run"))
 
 
 @pytest.fixture(scope="session")
 def max_batch_size(request: pytest.FixtureRequest) -> int | None:
     """Return max calls per batch request, or None for default."""
-    return request.config.getoption("max_tx_per_batch")
+    return cast(int | None, request.config.getoption("max_tx_per_batch"))
 
 
 @pytest.fixture(scope="session")
@@ -217,7 +219,7 @@ def use_testing_build_block(
     request: pytest.FixtureRequest,
 ) -> bool:
     """Return whether to use testing_buildBlockV1 for block building."""
-    return request.config.getoption("use_testing_build_block")
+    return cast(bool, request.config.getoption("use_testing_build_block"))
 
 
 @pytest.fixture(scope="session")
@@ -225,7 +227,9 @@ def default_max_fee_per_gas(
     request: pytest.FixtureRequest,
 ) -> int | None:
     """Return default max fee per gas (from CLI flag, or None)."""
-    max_fee_per_gas = request.config.getoption("default_max_fee_per_gas")
+    max_fee_per_gas: int | None = request.config.getoption(
+        "default_max_fee_per_gas"
+    )
     if max_fee_per_gas is not None:
         logger.debug(
             f"Using configured default max fee per gas: "
@@ -239,7 +243,7 @@ def default_max_priority_fee_per_gas(
     request: pytest.FixtureRequest,
 ) -> int | None:
     """Return default max priority fee per gas (from CLI flag, or None)."""
-    max_priority_fee_per_gas = request.config.getoption(
+    max_priority_fee_per_gas: int | None = request.config.getoption(
         "default_max_priority_fee_per_gas"
     )
     if max_priority_fee_per_gas is not None:
@@ -255,7 +259,7 @@ def default_max_fee_per_blob_gas(
     request: pytest.FixtureRequest,
 ) -> int | None:
     """Return default max fee per blob gas (from CLI flag, or None)."""
-    max_fee_per_blob_gas = request.config.getoption(
+    max_fee_per_blob_gas: int | None = request.config.getoption(
         "default_max_fee_per_blob_gas"
     )
     if max_fee_per_blob_gas is not None:
@@ -325,4 +329,4 @@ def gas_price(max_fee_per_gas: int, max_priority_fee_per_gas: int) -> int:
 @pytest.fixture()
 def max_gas_limit_per_test(request: pytest.FixtureRequest) -> int | None:
     """Total gas limit across all transactions in a given test (or None)."""
-    return request.config.getoption("max_gas_per_test")
+    return cast(int | None, request.config.getoption("max_gas_per_test"))

@@ -107,12 +107,13 @@ def _resolve_base_fee_per_gas(
     assert env.parent_gas_limit is not None
     assert env.parent_gas_used is not None
     assert env.parent_base_fee_per_gas is not None
-    return fork.calculate_base_fee_per_gas(
+    base_fee_per_gas: Uint = fork.calculate_base_fee_per_gas(
         block_gas_limit,
         Uint(int(env.parent_gas_limit)),
         Uint(int(env.parent_gas_used)),
         Uint(int(env.parent_base_fee_per_gas)),
     )
+    return base_fee_per_gas
 
 
 def _resolve_excess_blob_gas(
@@ -166,7 +167,8 @@ def _resolve_excess_blob_gas(
         arguments["slot_number"] = U64(0)
 
     parent_header = fork.Header(**arguments)
-    return fork.calculate_excess_blob_gas(parent_header)
+    excess_blob_gas: U64 = fork.calculate_excess_blob_gas(parent_header)
+    return excess_blob_gas
 
 
 def _resolve_block_difficulty(
@@ -191,7 +193,8 @@ def _resolve_block_difficulty(
         empty_ommers_hash = keccak256(rlp.encode([]))
         parent_ommers_hash = Hash32(env.parent_ommers_hash)
         args.append(parent_ommers_hash != empty_ommers_hash)
-    return fork.calculate_block_difficulty(*args)
+    difficulty: Uint = fork.calculate_block_difficulty(*args)
+    return difficulty
 
 
 def _resolve_prev_randao(env: "TestingEnvironment") -> Bytes32:

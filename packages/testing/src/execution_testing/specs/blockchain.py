@@ -843,7 +843,7 @@ headers.
 
 def _tx_phase(tx: Transaction) -> TestPhase | None:
     """Read a tx's phase: ``test_phase`` first, then ``metadata.phase``."""
-    phase = getattr(tx, "test_phase", None)
+    phase: TestPhase | None = getattr(tx, "test_phase", None)
     if phase is not None:
         return phase
     meta = getattr(tx, "metadata", None)

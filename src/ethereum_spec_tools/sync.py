@@ -912,17 +912,17 @@ class Sync(ForkTracking):
             end - start,
         )
 
-    def fetch_chain_id(self, state: Any) -> U64:
+    def fetch_chain_id(self, state: Any) -> Optional[U64]:
         """
         Fetch the persisted chain id from the database.
         """
         state_mod = self.module("state")
         chain_id = state_mod.get_metadata(state, b"chain_id")
 
-        if chain_id is not None:
-            chain_id = U64(int(chain_id))
+        if chain_id is None:
+            return None
 
-        return chain_id
+        return U64(int(chain_id))
 
     def process_blocks(self) -> None:
         """

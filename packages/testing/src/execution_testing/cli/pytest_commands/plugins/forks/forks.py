@@ -20,6 +20,7 @@ from typing import (
     Set,
     Tuple,
     Type,
+    cast,
 )
 
 import pytest
@@ -360,7 +361,8 @@ class CovariantDecorator(CovariantDescriptor):
         def fn(fork: Fork | TransitionFork) -> List[Any]:
             if fork.is_transition_fork:
                 raise ValueError(f"Transition forks are not supported: {fork}")
-            return getattr(fork, self.fork_attribute_name)()
+            values: List[Any] = getattr(fork, self.fork_attribute_name)()
+            return values
 
         super().__init__(
             argnames=self.marker_parameter_names,
@@ -733,7 +735,10 @@ def session_fork(
         hasattr(request.config, "single_fork_mode")
         and request.config.single_fork_mode
     ):
-        return list(request.config.selected_fork_set)[0]  # type: ignore[attr-defined]
+        selected_fork_set: Set[Fork | TransitionFork] = (
+            request.config.selected_fork_set  # type: ignore[attr-defined]
+        )
+        return list(selected_fork_set)[0]
     raise AssertionError(
         "Plugin used `session_fork` fixture without the correct "
         "configuration (single_fork_mode)."
@@ -1569,9 +1574,9 @@ def _get_item_params(
 ) -> Dict[str, Any] | None:
     """Return the callspec params for a collected test item, if any."""
     if hasattr(item, "callspec"):
-        return item.callspec.params
+        return cast(Dict[str, Any], item.callspec.params)
     if hasattr(item, "params"):
-        return item.params
+        return cast(Dict[str, Any], item.params)
     return None
 
 
@@ -1604,8 +1609,9 @@ def _combination_filter_reason(
                 returncode=pytest.ExitCode.USAGE_ERROR,
             )
         if not keep:
-            return marker.kwargs.get(
-                "reason", "rejected by filter_combinations"
+            return cast(
+                str,
+                marker.kwargs.get("reason", "rejected by filter_combinations"),
             )
     return None
 

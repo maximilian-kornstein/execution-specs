@@ -210,7 +210,9 @@ class GethEvm(EthereumCLI):
         self.trace = trace
         self._info_metadata: Optional[Dict[str, Any]] = {}
 
-    def _run_command(self, command: List[str]) -> subprocess.CompletedProcess:
+    def _run_command(
+        self, command: List[str]
+    ) -> subprocess.CompletedProcess[str]:
         try:
             return subprocess.run(
                 command,

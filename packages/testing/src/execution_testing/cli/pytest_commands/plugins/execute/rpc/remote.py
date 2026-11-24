@@ -1,6 +1,7 @@
 """Pytest plugin to run the execute in remote-rpc-mode."""
 
 from pathlib import Path
+from typing import cast
 
 import pytest
 
@@ -154,7 +155,7 @@ def pytest_configure(config: pytest.Config) -> None:
 @pytest.fixture(scope="session")
 def engine_rpc(request: pytest.FixtureRequest) -> EngineRPC | None:
     """Execute remote command does not have access to the engine RPC."""
-    return request.config.engine_rpc  # type: ignore[attr-defined]
+    return cast(EngineRPC | None, request.config.engine_rpc)  # type: ignore[attr-defined]
 
 
 @pytest.fixture(autouse=True, scope="session")

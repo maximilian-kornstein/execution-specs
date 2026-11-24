@@ -92,7 +92,7 @@ class ForkOverrides:
             return True
 
         try:
-            default = getattr(on, name)
+            default: object = getattr(on, name)
         except AttributeError:
             return False
 

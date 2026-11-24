@@ -214,7 +214,9 @@ class ErigonEvm(EthereumCLI):
             return False
         return cls.erigon_marker in help_output
 
-    def _run_command(self, command: List[str]) -> subprocess.CompletedProcess:
+    def _run_command(
+        self, command: List[str]
+    ) -> subprocess.CompletedProcess[str]:
         try:
             return subprocess.run(
                 command,

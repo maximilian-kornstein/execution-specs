@@ -43,7 +43,11 @@ def block_body_override_requests(
     default.
     """
     if hasattr(request, "param"):
-        return request.param
+        override_requests: (
+            List[DepositRequest | WithdrawalRequest | ConsolidationRequest]
+            | None
+        ) = request.param
+        return override_requests
     return None
 
 

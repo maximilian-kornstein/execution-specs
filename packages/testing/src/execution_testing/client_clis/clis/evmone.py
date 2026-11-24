@@ -179,7 +179,7 @@ class EvmoneFixtureConsumerCommon:
                 )
 
             try:
-                output_data = json.load(tempfile_json)
+                output_data: Dict[str, Any] = json.load(tempfile_json)
             except json.JSONDecodeError as e:
                 raise Exception(
                     "Failed to parse JSON output from "

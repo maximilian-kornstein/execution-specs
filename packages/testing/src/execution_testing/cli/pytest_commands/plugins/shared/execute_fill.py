@@ -2,7 +2,7 @@
 Shared pytest fixtures and hooks for EEST generation modes (fill and execute).
 """
 
-from typing import Any, Dict, List, Tuple, Type
+from typing import Any, Dict, List, Tuple, Type, cast
 
 import pytest
 from pytest import StashKey
@@ -421,7 +421,7 @@ def _spec_parameter(request: pytest.FixtureRequest) -> Tuple[Any, Any]:
 @pytest.fixture(scope="function")
 def spec_type(request: pytest.FixtureRequest) -> Type[BaseTest] | None:
     """Return the spec type that fills or executes the test."""
-    return _spec_parameter(request)[0]
+    return cast(Type[BaseTest] | None, _spec_parameter(request)[0])
 
 
 @pytest.fixture(scope="function")

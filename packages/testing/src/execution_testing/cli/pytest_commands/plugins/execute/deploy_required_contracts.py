@@ -1,6 +1,6 @@
 """Pytest plugin to deploy required contracts for execute command."""
 
-from typing import Literal
+from typing import Literal, cast
 
 import pytest
 
@@ -44,7 +44,7 @@ def pytest_addoption(parser: pytest.Parser) -> None:
 @pytest.fixture(scope="session")
 def gas_price(request: pytest.FixtureRequest, eth_rpc: EthRPC) -> int:
     """Get the gas price for deployment transactions."""
-    gas_price_option = request.config.option.deploy_gas_price
+    gas_price_option: int | None = request.config.option.deploy_gas_price
     if gas_price_option is not None:
         return gas_price_option
 
@@ -55,13 +55,13 @@ def gas_price(request: pytest.FixtureRequest, eth_rpc: EthRPC) -> int:
 @pytest.fixture(scope="session")
 def check_only(request: pytest.FixtureRequest) -> bool:
     """Get the check-only flag."""
-    return request.config.option.check_only
+    return cast(bool, request.config.option.check_only)
 
 
 @pytest.fixture(scope="session")
 def session_fork(request: pytest.FixtureRequest) -> Fork:
     """Return a default fork for the deploy command."""
-    return request.config.option.fork
+    return cast(Fork, request.config.option.fork)
 
 
 @pytest.fixture(scope="session")

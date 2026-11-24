@@ -302,7 +302,8 @@ class VmTest(FixtureTestItem):
     def test_dict(self) -> Dict[str, Any]:
         """Load test from disk."""
         loaded_file = self.fixtures_file.data
-        return loaded_file[self.test_key]
+        test_dict: Dict[str, Any] = loaded_file[self.test_key]
+        return test_dict
 
     def runtest(self) -> None:
         """Run a VM test from JSON test case data."""
@@ -349,7 +350,8 @@ class VmTestFixture(Fixture, Collector):
     def test_dict(self) -> Dict[str, Any]:
         """Load test from disk."""
         loaded_file = self.fixtures_file.data
-        return loaded_file[self.test_key]
+        test_dict: Dict[str, Any] = loaded_file[self.test_key]
+        return test_dict
 
     def collect(self) -> Generator[Item | Collector, None, None]:
         """Collect VM test cases for each supported fork."""

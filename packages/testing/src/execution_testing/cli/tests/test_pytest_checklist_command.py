@@ -1,5 +1,6 @@
 """Tests for the checklist command click CLI."""
 
+from typing import cast
 from unittest.mock import patch
 
 import pytest
@@ -25,7 +26,7 @@ def _captured_execute_args(runner: CliRunner, *cli_args: str) -> list[str]:
     instance = mock_cls.return_value
     instance.execute.assert_called_once()
     (execute_args,) = instance.execute.call_args.args
-    return execute_args
+    return cast(list[str], execute_args)
 
 
 def test_checklist_default_injects_include_benchmark(

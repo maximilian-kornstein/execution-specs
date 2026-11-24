@@ -129,7 +129,7 @@ def sender_fund_refund_gas_limit(
 @pytest.fixture(scope="session")
 def seed_account_sweep_amount(request: pytest.FixtureRequest) -> int | None:
     """Get the seed account sweep amount."""
-    sweep_amount = request.config.option.seed_account_sweep_amount
+    sweep_amount: int | None = request.config.option.seed_account_sweep_amount
     if sweep_amount is not None:
         sweep_eth = sweep_amount / 10**18
         logger.info(

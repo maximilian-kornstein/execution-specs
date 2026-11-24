@@ -24,6 +24,7 @@ from execution_testing import (
     Fork,
     Hash,
     Op,
+    Opcodes,
     StateTestFiller,
     Transaction,
 )
@@ -201,7 +202,7 @@ def subject_code(operation: str, pre: Alloc, fork: Fork) -> Bytecode:
         return code
     if operation.startswith("log"):
         topics = [0x1, 0x2, 0x3, 0x4][: int(operation[3:])]
-        log_opcode = getattr(Op, operation.upper())
+        log_opcode: Opcodes = getattr(Op, operation.upper())
         code = (
             log_opcode(
                 FAR_REACH,
@@ -267,7 +268,8 @@ def subject_code(operation: str, pre: Alloc, fork: Fork) -> Bytecode:
     }
     if call_op in ("call", "callcode"):
         call_kwargs["value"] = 0x0
-    code = getattr(Op, call_op.upper())(**call_kwargs) + Op.STOP
+    call_opcode: Opcodes = getattr(Op, call_op.upper())
+    code = call_opcode(**call_kwargs) + Op.STOP
     return code
 
 

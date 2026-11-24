@@ -129,7 +129,7 @@ def test_dump_dir(
     request: pytest.FixtureRequest, fixture_path: Path, fixture_name: str
 ) -> Path | None:
     """The directory to write evm debug output to."""
-    base_dump_dir = request.config.getoption("base_dump_dir")
+    base_dump_dir: Path | None = request.config.getoption("base_dump_dir")
     if not base_dump_dir:
         return None
     if len(fixture_name) > 142:

@@ -49,7 +49,9 @@ class Nethtest(EthereumCLI):
         # TODO: Implement NethermindExceptionMapper
         self.exception_mapper = exception_mapper if exception_mapper else None
 
-    def _run_command(self, command: List[str]) -> subprocess.CompletedProcess:
+    def _run_command(
+        self, command: List[str]
+    ) -> subprocess.CompletedProcess[str]:
         try:
             return subprocess.run(
                 command,

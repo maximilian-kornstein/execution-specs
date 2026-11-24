@@ -155,7 +155,7 @@ class HeaderForkRequirement(str):
 
     def required(self, fork: Fork) -> bool:
         """Check if the field is required for the given fork."""
-        return getattr(fork, f"header_{self}_required")()
+        return cast(bool, getattr(fork, f"header_{self}_required")())
 
     @classmethod
     def get_from_annotation(cls, field_hints: Any) -> Self | None:

@@ -603,12 +603,12 @@ def pytest_report_header(config: pytest.Config) -> List[str]:
 @pytest.fixture(scope="session")
 def fixture_source_flags(request: pytest.FixtureRequest) -> List[str]:
     """Return the input flags used to specify the JSON test fixtures source."""
-    return request.config.fixture_source_flags  # type: ignore[attr-defined]
+    return cast(List[str], request.config.fixture_source_flags)  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
 def fixtures_source(request: pytest.FixtureRequest) -> FixturesSource:  # noqa: D103
-    return request.config.fixtures_source  # type: ignore[attr-defined]
+    return cast(FixturesSource, request.config.fixtures_source)  # type: ignore[attr-defined]
 
 
 def group_test_cases_by_fixture_file(

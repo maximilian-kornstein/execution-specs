@@ -5,7 +5,7 @@ import mmap
 import os
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 try:
     import orjson  # type: ignore[import-not-found]  # Fast JSON library (optional dependency)
@@ -29,10 +29,12 @@ class FastJSONHandler:
                 # Read the entire content at once
                 content = mmapped_file.read()
                 if HAS_ORJSON:
-                    return orjson.loads(content)
+                    return cast(Dict[str, Any], orjson.loads(content))
                 else:
                     # Fallback to standard json
-                    return json.loads(content.decode("utf-8"))
+                    return cast(
+                        Dict[str, Any], json.loads(content.decode("utf-8"))
+                    )
 
     @staticmethod
     def dump_json_fast(

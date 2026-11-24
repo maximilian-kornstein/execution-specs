@@ -20,7 +20,7 @@ derived from EIP-161 rather than pinned at one.
 """
 
 from dataclasses import dataclass, field
-from typing import Callable, Generator
+from typing import Callable, Generator, cast
 
 import pytest
 from _pytest.mark.structures import ParameterSet
@@ -186,17 +186,17 @@ def _stack(depth: int) -> tuple[Bytecode, int]:
 
 def _dup_op(n: int) -> Opcodes:
     """Return the `DUP<n>` opcode."""
-    return getattr(Op, f"DUP{n}")
+    return cast(Opcodes, getattr(Op, f"DUP{n}"))
 
 
 def _swap_op(n: int) -> Opcodes:
     """Return the `SWAP<n>` opcode."""
-    return getattr(Op, f"SWAP{n}")
+    return cast(Opcodes, getattr(Op, f"SWAP{n}"))
 
 
 def _push_op(n: int) -> Opcodes:
     """Return the `PUSH<n>` opcode."""
-    return getattr(Op, f"PUSH{n}")
+    return cast(Opcodes, getattr(Op, f"PUSH{n}"))
 
 
 def _dup_case(n: int) -> Case:

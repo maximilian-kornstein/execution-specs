@@ -49,9 +49,10 @@ class Fixture(ABC):
         **kwargs: Any,
     ) -> Self:
         """Pytest hook that returns a fixture from a JSON file."""
-        return super().from_parent(  # type: ignore[misc]
+        fixture: Self = super().from_parent(  # type: ignore[misc]
             parent=parent, **kwargs
         )
+        return fixture
 
     @classmethod
     @abstractmethod
@@ -82,7 +83,8 @@ class FixturesFile(File):
         """Return the JSON data of the full file."""
         # loaded once per worker per file (thanks to cached_property)
         with self.fspath.open("r", encoding="utf-8") as f:
-            return json.load(f)
+            data: Dict[str, Any] = json.load(f)
+        return data
 
     def clear_data_cache(self) -> None:
         """Drop the data cache."""

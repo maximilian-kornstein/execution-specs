@@ -3,7 +3,7 @@
 import re
 from os.path import realpath
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, List, cast
 from urllib.parse import urlparse
 
 import pytest
@@ -234,7 +234,7 @@ def rpc_endpoint(request: pytest.FixtureRequest) -> str:
     Return remote RPC endpoint to be used to make requests to the execution
     client.
     """
-    return request.config.getoption("rpc_endpoint")
+    return cast(str, request.config.getoption("rpc_endpoint"))
 
 
 def all_rpc_endpoints(config: pytest.Config) -> Dict[str, List[EthRPC]]:

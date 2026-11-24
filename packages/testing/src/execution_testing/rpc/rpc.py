@@ -605,11 +605,12 @@ class EthRPC(BaseRPC):
     ) -> List[dict[str, Any]] | None:
         """`eth_getBlockReceipts`: Returns every receipt in a block."""
         logger.info(f"Requesting all receipts for block {block_hash}..")
-        return self.post_request(
+        receipts: List[dict[str, Any]] | None = self.post_request(
             request=RPCCall(
                 method="getBlockReceipts", params=[f"{block_hash}"]
             )
         ).result_or_raise()
+        return receipts
 
     def get_logs(
         self,
@@ -629,9 +630,10 @@ class EthRPC(BaseRPC):
         if address is not None:
             params["address"] = f"{address}"
         logger.info(f"Requesting logs for {params}..")
-        return self.post_request(
+        logs: List[dict[str, Any]] = self.post_request(
             request=RPCCall(method="getLogs", params=[params])
         ).result_or_raise()
+        return logs
 
     def get_block_by_hash(
         self, block_hash: Hash, full_txs: bool = True
@@ -689,7 +691,7 @@ class EthRPC(BaseRPC):
         def _get_block() -> dict[str, Any]:
             nonlocal attempts
             attempts += 1
-            block = self.get_block_by_hash(block_hash)
+            block: dict[str, Any] | None = self.get_block_by_hash(block_hash)
             if block is None:
                 raise BlockNotAvailableError(
                     block_hash=block_hash,
@@ -882,12 +884,13 @@ class EthRPC(BaseRPC):
         in benchmark tests.
         """
         logger.info(f"Requesting tx receipt of {transaction_hash}")
-        return self.post_request(
+        receipt: dict[str, Any] | None = self.post_request(
             request=RPCCall(
                 method="getTransactionReceipt",
                 params=[f"{transaction_hash}"],
             )
         ).result_or_raise()
+        return receipt
 
     def get_transaction_receipts(
         self, transaction_hashes: Sequence[Hash]
@@ -1821,9 +1824,10 @@ class AdminRPC(BaseRPC):
 
     def add_peer(self, enode: str) -> bool:
         """`admin_addPeer`: Add a peer by enode URL."""
-        return self.post_request(
+        added: bool = self.post_request(
             request=RPCCall(method="addPeer", params=[enode])
         ).result_or_raise()
+        return added
 
 
 class Web3RPC(BaseRPC, namespace="web3"):
@@ -1831,6 +1835,7 @@ class Web3RPC(BaseRPC, namespace="web3"):
 
     def client_version(self) -> str:
         """`web3_clientVersion`: Return the client's version identifier."""
-        return self.post_request(
+        version: str = self.post_request(
             request=RPCCall(method="clientVersion", params=[])
         ).result_or_raise()
+        return version

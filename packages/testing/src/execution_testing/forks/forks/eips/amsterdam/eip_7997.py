@@ -43,8 +43,9 @@ class EIP7997(BaseFork):
             DETERMINISTIC_FACTORY_CONTRACT_ADDRESS: {
                 "nonce": 1,
                 "code": DETERMINISTIC_FACTORY_CONTRACT_BYTECODE,
-            }
-        } | super(EIP7997, cls).pre_allocation()  # type: ignore[operator]
+            },
+            **super(EIP7997, cls).pre_allocation(),
+        }
 
     @classmethod
     def pre_allocation_blockchain(cls) -> Mapping:
@@ -53,5 +54,6 @@ class EIP7997(BaseFork):
             DETERMINISTIC_FACTORY_CONTRACT_ADDRESS: {
                 "nonce": 1,
                 "code": DETERMINISTIC_FACTORY_CONTRACT_BYTECODE,
-            }
-        } | super(EIP7997, cls).pre_allocation_blockchain()  # type: ignore[operator]
+            },
+            **super(EIP7997, cls).pre_allocation_blockchain(),
+        }

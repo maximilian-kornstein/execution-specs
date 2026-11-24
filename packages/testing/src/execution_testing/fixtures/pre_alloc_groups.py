@@ -18,6 +18,7 @@ from typing import (
     Self,
     Set,
     Tuple,
+    cast,
 )
 
 from pydantic import Field, PrivateAttr
@@ -673,7 +674,7 @@ class GroupPreAlloc(Alloc):
             and self._model_dump_cache.model_dump_type == "string"
             and self._model_dump_cache.model_dump_config == kwargs
         ):
-            return self._model_dump_cache.data
+            return cast(str, self._model_dump_cache.data)
 
         data = super().model_dump_json(**kwargs)
         self._model_dump_cache = ModelDumpCache(

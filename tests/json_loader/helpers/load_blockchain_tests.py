@@ -202,7 +202,8 @@ class BlockchainTestFixture(Fixture, FixtureTestItem):
     def test_dict(self) -> Dict[str, Any]:
         """Load test from disk."""
         loaded_file = self.fixtures_file.data
-        return loaded_file[self.test_key]
+        test_dict: Dict[str, Any] = loaded_file[self.test_key]
+        return test_dict
 
     def runtest(self) -> None:
         """Run a blockchain state test from JSON test case data."""

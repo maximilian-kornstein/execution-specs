@@ -186,7 +186,7 @@ def get_docstring_one_liner(item: pytest.Item) -> str:
     """
     item = cast(pytest.Function, item)  # help mypy infer type
     func_obj = item.obj
-    docstring = func_obj.__doc__
+    docstring: str | None = func_obj.__doc__
     test_function_name = get_test_function_name(item)
 
     if not docstring:

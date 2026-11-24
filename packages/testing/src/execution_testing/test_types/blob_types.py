@@ -151,7 +151,7 @@ class Blob(CamelModel):
             )
 
             # calculate commitment
-            commitment = ckzg.blob_to_kzg_commitment(
+            commitment: Bytes = ckzg.blob_to_kzg_commitment(
                 data, Blob.trusted_setup()
             )
             assert len(commitment) == fork.get_blob_constant(
@@ -178,6 +178,7 @@ class Blob(CamelModel):
                     fork.get_blob_constant("BYTES_PER_FIELD_ELEMENT"),
                     byteorder="big",
                 )
+                proof: Bytes
                 proof, _ = ckzg.compute_kzg_proof(
                     data, z_valid_size, Blob.trusted_setup()
                 )
@@ -185,6 +186,7 @@ class Blob(CamelModel):
 
             # >=osaka
             if amount_cell_proofs == 128:
+                proofs: List[Bytes]
                 _, proofs = ckzg.compute_cells_and_kzg_proofs(
                     data, Blob.trusted_setup()
                 )  # returns List[byte] of length 128
@@ -207,6 +209,7 @@ class Blob(CamelModel):
 
             # >=osaka
             if amount_cell_proofs == 128:
+                cells: List[Bytes]
                 cells, _ = ckzg.compute_cells_and_kzg_proofs(
                     data, Blob.trusted_setup()
                 )  # returns List[byte] of length 128
@@ -345,7 +348,7 @@ class Blob(CamelModel):
         # each cell refers to the same commitment
         commitments: list[bytes] = [self.commitment] * len(cell_indices)
 
-        is_valid = ckzg.verify_cell_kzg_proof_batch(
+        is_valid: bool = ckzg.verify_cell_kzg_proof_batch(
             commitments,
             cell_indices,
             self.cells,

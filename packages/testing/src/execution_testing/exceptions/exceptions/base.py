@@ -56,7 +56,9 @@ class ExceptionBase(Enum):
             )
             exception_class = cls
 
-        exception = getattr(exception_class, enum_name, None)
+        exception: ExceptionBase | None = getattr(
+            exception_class, enum_name, None
+        )
         if exception is not None:
             return exception
         raise ValueError(f"No such exception in {class_name}: {value}")
@@ -112,7 +114,7 @@ def to_pipe_str(value: Any) -> str:
     return str(value)
 
 
-def from_pipe_str(value: Any) -> str | list[str]:
+def from_pipe_str(value: Any) -> Any:
     """Parse a single string as a pipe separated list into enum exceptions."""
     if isinstance(value, str):
         exception_list = value.split("|")

@@ -1,6 +1,6 @@
 """Hive instance information structures."""
 
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, cast
 
 import yaml
 from pydantic import BaseModel, Field, RootModel
@@ -14,7 +14,7 @@ class YAMLModel(BaseModel):
 
     def yaml(self, **kwargs: Any) -> str:
         """Return the YAML representation of the model."""
-        return yaml.dump(self.model_dump(), **kwargs)
+        return cast(str, yaml.dump(self.model_dump(), **kwargs))
 
     @classmethod
     def parse_yaml(cls, yaml_string: str) -> Self:

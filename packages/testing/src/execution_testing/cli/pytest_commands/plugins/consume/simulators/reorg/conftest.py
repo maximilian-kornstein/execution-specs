@@ -8,7 +8,7 @@ environment plus ``HIVE_ENGINE_MAX_REORG_DEPTH`` derived from the fixture's
 
 import io
 import logging
-from typing import Mapping
+from typing import Mapping, cast
 
 import pytest
 
@@ -48,7 +48,7 @@ def pytest_configure(config: pytest.Config) -> None:
 @pytest.fixture(scope="session")
 def get_payload_wait_time(request: pytest.FixtureRequest) -> float:
     """Seconds to wait after a build request before calling getPayload."""
-    return request.config.getoption("get_payload_wait_time")
+    return cast(float, request.config.getoption("get_payload_wait_time"))
 
 
 @pytest.fixture(scope="module")

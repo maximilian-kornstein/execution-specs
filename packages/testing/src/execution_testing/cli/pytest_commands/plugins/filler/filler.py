@@ -32,6 +32,7 @@ from typing import (
     Self,
     Set,
     Type,
+    cast,
 )
 
 import pytest
@@ -222,7 +223,9 @@ class FillingSession:
         CLI passes it to phase 1 to ensure all formats are considered for
         grouping.
         """
-        pre_configured_phase = getattr(config, "filling_phase", None)
+        pre_configured_phase: FixtureFillingPhase | None = getattr(
+            config, "filling_phase", None
+        )
         if pre_configured_phase is not None:
             # Another plugin already configured the phase.
             return pre_configured_phase
@@ -1205,7 +1208,7 @@ def pytest_html_report_title(report: Any) -> None:
 @pytest.fixture(autouse=True, scope="session")
 def evm_bin(request: pytest.FixtureRequest) -> Path | None:
     """Return configured evm tool binary path used to run t8n."""
-    return request.config.getoption("evm_bin")
+    return cast(Path | None, request.config.getoption("evm_bin"))
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -1213,7 +1216,7 @@ def verify_fixtures_bin(request: pytest.FixtureRequest) -> Path | None:
     """
     Return configured evm tool binary path used to run statetest or blocktest.
     """
-    return request.config.getoption("verify_fixtures_bin")
+    return cast(Path | None, request.config.getoption("verify_fixtures_bin"))
 
 
 @pytest.fixture(autouse=True, scope="session")
@@ -1382,7 +1385,7 @@ def base_dump_dir(request: pytest.FixtureRequest) -> Path | None:
 @pytest.fixture(scope="session")
 def fixture_output(request: pytest.FixtureRequest) -> FixtureOutput:
     """Return the fixture output configuration."""
-    return request.config.fixture_output  # type: ignore[attr-defined]
+    return cast(FixtureOutput, request.config.fixture_output)  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
@@ -1541,7 +1544,7 @@ def fixture_collector(
 @pytest.fixture(autouse=True, scope="session")
 def filler_path(request: pytest.FixtureRequest) -> Path:
     """Return directory containing the tests to execute."""
-    return request.config.getoption("filler_path")
+    return cast(Path, request.config.getoption("filler_path"))
 
 
 def node_to_test_info(node: pytest.Item) -> TestInfo:
@@ -1566,7 +1569,10 @@ def optimistic_pre_alloc_grouping_disabled(
     request: pytest.FixtureRequest,
 ) -> bool:
     """Whether optimistic pre-allocation grouping is disabled or not."""
-    return request.config.getoption("optimistic_pre_alloc_grouping_disabled")
+    return cast(
+        bool,
+        request.config.getoption("optimistic_pre_alloc_grouping_disabled"),
+    )
 
 
 @pytest.fixture(scope="function")
@@ -1576,7 +1582,7 @@ def fixture_source_url(
 ) -> str:
     """Return URL to the fixture source."""
     if hasattr(request.node, "github_url"):
-        return request.node.github_url
+        return cast(str, request.node.github_url)
     function_line_number = request.function.__code__.co_firstlineno
     module_relative_path = os.path.relpath(
         request.function.__code__.co_filename

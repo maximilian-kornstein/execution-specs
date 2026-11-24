@@ -100,7 +100,9 @@ def address_stubs(
 
     If the address stubs are not supported by the subcommand, return None.
     """
-    address_stubs = request.config.getoption("address_stubs", None)
+    address_stubs: AddressStubs | None = request.config.getoption(
+        "address_stubs", None
+    )
     if address_stubs is not None:
         logger.info(
             f"Using address stubs with {len(address_stubs.root)} entries"
@@ -121,7 +123,7 @@ def stub_eoas(
 @pytest.fixture(scope="session")
 def skip_cleanup(request: pytest.FixtureRequest) -> bool:
     """Return whether to skip cleanup phase after each test."""
-    skip = request.config.getoption("skip_cleanup")
+    skip: bool = request.config.getoption("skip_cleanup")
     if skip:
         logger.info("Cleanup phase will be skipped after each test")
     else:

@@ -40,7 +40,8 @@ def load_fuzzer_vector(filename: str) -> Dict[str, Any]:
     """
     vector_path = Path(__file__).parent / "vectors" / filename
     with open(vector_path) as f:
-        return json.load(f)
+        vector: Dict[str, Any] = json.load(f)
+    return vector
 
 
 class TestFuzzerOutputParsing:

@@ -479,6 +479,7 @@ strict_bytes = true
 warn_unused_ignores = true
 warn_unused_configs = true
 warn_redundant_casts = true
+warn_return_any = true
 ignore_missing_imports = false
 mypy_path = ["src", "packages/testing/src", "packages/testing/stubs"]
 files = ["src", "tests", "packages"]
@@ -524,6 +525,11 @@ ignore_missing_imports = true
 # pytest-xdist ships no type stubs / py.typed marker.
 module = "xdist.*"
 ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+# Wraps remerkleable, whose values are all `Any` without type stubs.
+module = "execution_testing.base_types.ssz"
+warn_return_any = false
 
 [tool.uv]
 # Older uv versions trust a root CA with a compromised intermediate:

@@ -1,6 +1,6 @@
 """Provides various mixins for Pydantic models."""
 
-from typing import Any, List, Literal, Tuple
+from typing import Any, Dict, List, Literal, Tuple
 
 from pydantic import BaseModel
 
@@ -41,9 +41,10 @@ class ModelCustomizationsMixin:
                 f"{self.__class__.__name__} does not have 'model_dump' method."
                 "Are you sure you are using a Pydantic model?"
             )
-        return self.model_dump(
+        dumped: Dict[str, Any] = self.model_dump(
             mode=mode, by_alias=by_alias, exclude_none=exclude_none
         )
+        return dumped
 
     def __repr_args__(self) -> Any:
         """

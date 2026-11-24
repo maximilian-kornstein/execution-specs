@@ -63,7 +63,7 @@ class GitReferenceSpec(ReferenceSpec):
         response = requests.get(self.api_url(), headers=headers)
         if response.status_code != 200:
             return None
-        content = json.loads(response.content)
+        content: Dict = json.loads(response.content)
         content["content"] = _decode_base64_content(content["content"])
         return content
 
@@ -82,7 +82,7 @@ class GitReferenceSpec(ReferenceSpec):
                 stacklevel=2,
             )
             return None
-        content = json.loads(response.content)
+        content: Dict = json.loads(response.content)
         content["content"] = _decode_base64_content(content["content"])
         self._latest_spec = content
         return content
@@ -99,14 +99,16 @@ class GitReferenceSpec(ReferenceSpec):
         latest = self._get_latest_spec()
         if latest is None:
             raise Exception("unable to get latest version")
-        return latest["sha"].strip() != self.SpecVersion.strip()
+        latest_sha: str = latest["sha"]
+        return latest_sha.strip() != self.SpecVersion.strip()
 
     def latest_version(self) -> str:
         """Return the sha digest of the latest version of the spec."""
         latest = self._get_latest_spec()
         if latest is None or "sha" not in latest:
             return ""
-        return latest["sha"]
+        latest_sha: str = latest["sha"]
+        return latest_sha
 
     def has_known_version(self) -> bool:
         """

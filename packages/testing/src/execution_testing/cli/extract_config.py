@@ -143,7 +143,7 @@ class GenesisState(BaseModel):
     ) -> dict[str, object]:
         """Serialize the genesis state model to a dictionary."""
         serialized = handler(self)
-        output = serialized["header"]
+        output: dict[str, object] = serialized["header"]
         output["alloc"] = {
             k.replace("0x", ""): v for k, v in serialized["alloc"].items()
         }

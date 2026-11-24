@@ -42,7 +42,7 @@ import os
 import warnings
 from dataclasses import asdict
 from pathlib import Path
-from typing import Any, Generator, List
+from typing import Any, Generator, List, cast
 
 import pytest
 from filelock import FileLock
@@ -182,7 +182,7 @@ def pytest_runtest_makereport(
 @pytest.fixture(scope="session")
 def simulator(request: pytest.FixtureRequest) -> Simulation:
     """Return the Hive simulator instance."""
-    return request.config.hive_simulator  # type: ignore[attr-defined]
+    return cast(Simulation, request.config.hive_simulator)  # type: ignore[attr-defined]
 
 
 @pytest.fixture(scope="session")
@@ -208,7 +208,7 @@ def get_test_suite_scope(fixture_name: str, config: pytest.Config) -> str:
     del fixture_name
 
     if hasattr(config, "test_suite_scope"):
-        return config.test_suite_scope
+        return cast(str, config.test_suite_scope)
     return "module"
 
 
